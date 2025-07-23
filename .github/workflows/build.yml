@@ -30,6 +30,7 @@ jobs:
 
       - name: Change app and package name
         run: |
+          pwd
           sed -E '/app_name/s/LADB/LADB-/' -i ./app/src/main/res/values/strings.xml'
           sed -E '/applicationId/s|com\.draco\.ladb|com.draco.ladb_|p' -i ./app/build.gradle
 
