@@ -61,6 +61,9 @@ jobs:
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
           buildToolsVersion: 36.0.0
 
+      - name: ls *.apk
+        run: ls app/build/outputs/apk/release/*.apk
+
       # Create GitHub Release and upload APK
       - name: Create Release and Upload APK
         uses: softprops/action-gh-release@v2
