@@ -66,6 +66,9 @@ jobs:
       - name: ls
         run: ls ${{ env.APP_FOLDER }}/build/outputs/apk/release
 
+      - name: Checkout for release
+        uses: actions/checkout@v4
+
       # Create GitHub Release and upload APK
       - name: Create Release and Upload APK
         uses: softprops/action-gh-release@v2
