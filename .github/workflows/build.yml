@@ -72,5 +72,5 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: LADB Release ${{ env.VERSION_NAME }}
-          body: Automated release for LADB version ${{ env.VERSION_NAME }}
+      #    body: Automated release for LADB version ${{ env.VERSION_NAME }}
           files: app/build/outputs/apk/release/*-signed.apk
