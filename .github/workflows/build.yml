@@ -56,7 +56,7 @@ jobs:
         id: sign_apk
         uses: ilharp/sign-android-release@v2
         with:
-          releaseDir: ${{ env.APP_FOLDER }}/build/outputs/apk/release
+          releaseDir: app/build/outputs/apk/release
           signingKey: ${{ secrets.SIGNING_KEY }}
           keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
@@ -72,4 +72,4 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: LADB Release ${{ env.VERSION_NAME }}
           body: Automated release for LADB version ${{ env.VERSION_NAME }}
-          files: ${{ env.APP_FOLDER }}/build/outputs/apk/release/*-signed.apk
+          files: app/build/outputs/apk/release/*-signed.apk
