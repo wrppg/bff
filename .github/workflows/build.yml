@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
 
 env:
-  APP_FOLDER: app
-  MAIN_PROJECT_MODULE: app
   APP_NAME: LADB-
   APP_ID: com.draco.ladb_
 
