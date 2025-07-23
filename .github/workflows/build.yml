@@ -66,11 +66,11 @@ jobs:
       - name: ls
         run: |
           ls ${{ env.APP_FOLDER }}/build/outputs/apk/release
-          echo "${{ env.GITHUB_WORKSPACE }}/app/build/outputs/apk/release" >> $GITHUB_APK_PATH
+          echo "${{ env.GITHUB_WORKSPACE }}/app/build/outputs/apk/release" >> $GITHUB_APKPATH
       - name: show path
         run: |
-          echo $APK_PATH
-          echo ${{ env.APK_PATH }}
+          echo $APKPATH
+          echo ${{ env.APKPATH }}
         
       - name: Checkout for release
         uses: actions/checkout@v4
@@ -84,4 +84,4 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: LADB Release ${{ env.VERSION_NAME }}
           body: Automated release for LADB version ${{ env.VERSION_NAME }}
-          files: ${{ env.APK_PATH }}/*-signed.apk
+          files: ${{ env.APKPATH }}/*-signed.apk
