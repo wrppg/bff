@@ -63,18 +63,6 @@ jobs:
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
           buildToolsVersion: 36.0.0
 
-      - name: ls
-        run: |
-          ls ${{ env.APP_FOLDER }}/build/outputs/apk/release
-          echo "${{ env.GITHUB_WORKSPACE }}/app/build/outputs/apk/release" >> $GITHUB_PATH
-          echo $PATH
-                  
-      - name: Checkout for release
-        uses: actions/checkout@v4
-
-      - name: show path
-        run: ls ${{ env.GITHUB_WORKSPACE }}/app/build/outputs/apk/release/*
-
       # Create GitHub Release and upload APK
       - name: Create Release and Upload APK
         uses: softprops/action-gh-release@v2
@@ -84,4 +72,4 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: LADB Release ${{ env.VERSION_NAME }}
           body: Automated release for LADB version ${{ env.VERSION_NAME }}
-          files: ${{ env.GITHUB_WORKSPACE }}/app/build/outputs/apk/release/*-signed.apk
+          files: ${{ env.APP_FOLDER }}/build/outputs/apk/release/*-signed.apk
