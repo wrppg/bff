@@ -67,9 +67,8 @@ jobs:
       # Create GitHub Release and upload APK
       - name: Create Release and Upload APK
         uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.ref_name }}
           name: LADB Release ${{ env.VERSION_NAME }}
       #    body: Automated release for LADB version ${{ env.VERSION_NAME }}
