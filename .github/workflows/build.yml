@@ -67,6 +67,7 @@ jobs:
       # Create GitHub Release and upload APK
       - name: Create Release and Upload APK
         uses: softprops/action-gh-release@v2
+        if: success()
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.ref_name }}
