@@ -64,6 +64,11 @@ jobs:
       - name: ls *.apk
         run: ls app/build/outputs/apk/release/*.apk
 
+      - name: rm
+        run: |
+          rm app/build/outputs/apk/release/*-{unsigned,temp}.apk
+          ls app/build/outputs/apk/release/
+
       # Create GitHub Release and upload APK
       - name: Create Release and Upload APK
         uses: softprops/action-gh-release@v2
