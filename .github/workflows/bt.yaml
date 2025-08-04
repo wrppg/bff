@@ -1,4 +1,4 @@
-name: Release
+name: Build-tools
 
 on:
   workflow_dispatch:
