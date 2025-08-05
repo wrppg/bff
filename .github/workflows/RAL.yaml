@@ -45,23 +45,23 @@ jobs:
 
         # Download the modified android.jar from Reginer/aosp-android-jar
         echo "Downloading modified android.jar for API $API_LEVEL..."
-        curl -L -o "$TARGET_DIR/android.jar" "https://github.com/Reginer/aosp-android-jar/raw/android-$API_LEVEL/android.jar"
+        curl -L -o "$TARGET_DIR/android.jar" " https://github.com/Reginer/aosp-android-jar/raw/refs/heads/main/android-$API_LEVEL/android.jar"
         if [ $? -ne 0 ]; then
           echo "Error: Failed to download android.jar"
           exit 1
         fi
         echo "android.jar downloaded successfully."
 
-        # Download the modified framework.jar from Reginer/aosp-android-jar
-        echo "Downloading modified framework.jar for API $API_LEVEL..."
-        curl -L -o "$TARGET_DIR/framework.jar" "https://github.com/Reginer/aosp-android-jar/raw/android-$API_LEVEL/framework.jar"
-        if [ $? -ne 0 ]; then
-          echo "Error: Failed to download framework.jar"
-          exit 1
-        fi
-        echo "framework.jar downloaded successfully."
+        # # Download the modified framework.jar from Reginer/aosp-android-jar
+        # echo "Downloading modified framework.jar for API $API_LEVEL..."
+        # curl -L -o "$TARGET_DIR/framework.jar" "https://github.com/Reginer/aosp-android-jar/raw/android-$API_LEVEL/framework.jar"
+        # if [ $? -ne 0 ]; then
+        #   echo "Error: Failed to download framework.jar"
+        #   exit 1
+        # fi
+        # echo "framework.jar downloaded successfully."
 
-        echo "Modified Android JARs installed into $TARGET_DIR."
+        # echo "Modified Android JARs installed into $TARGET_DIR."
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew # Ensure the Gradle wrapper script is executable
