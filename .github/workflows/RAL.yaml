@@ -45,7 +45,7 @@ jobs:
 
         # Download the modified android.jar from Reginer/aosp-android-jar
         echo "Downloading modified android.jar for API $API_LEVEL..."
-        curl -L -o "$TARGET_DIR/android.jar" " https://github.com/Reginer/aosp-android-jar/raw/refs/heads/main/android-$API_LEVEL/android.jar"
+        curl -L -o "$TARGET_DIR/android.jar" "https://github.com/Reginer/aosp-android-jar/raw/refs/heads/main/android-$API_LEVEL/android.jar"
         if [ $? -ne 0 ]; then
           echo "Error: Failed to download android.jar"
           exit 1
