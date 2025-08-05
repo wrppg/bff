@@ -35,7 +35,7 @@ jobs:
         echo "Detected ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
 
         # Define the target Android API level for the modified JARs
-        API_LEVEL=34
+        API_LEVEL=35
         TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-$API_LEVEL"
 
         echo "Target directory for modified JARs: $TARGET_DIR"
