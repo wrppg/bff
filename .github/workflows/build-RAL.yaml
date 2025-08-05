@@ -1,0 +1,66 @@
+name: Build Root Activity Launcher
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'zacharee/RootActivityLauncher'
+          ref: 'main'
+
+      # Set up JDK 17 for Android build
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Set up Android SDK
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          cmdline-tools-version: '12.0'
+          accept-sdk-licenses: 'true'
+
+      # Download and install modified Android SDK (aosp-android-jar)
+      - name: Download modified Android SDK
+        run: |
+          echo ${{ env.ANDROID_HOME }}
+          curl -L https://github.com/Reginer/aosp-android-jar/raw/refs/heads/main/android-34/android.jar -o $ANDROID_HOME/platforms/android-34/android.jar
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+
+      # Cache Gradle dependencies
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      # Grant execute permission for Gradle wrapper
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      # Build the project with Gradle
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      # Upload build artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-outputs
+          path: |
+            app/build/outputs/apk/**/*.apk
+            app/build/outputs/bundle/**/*.aab
