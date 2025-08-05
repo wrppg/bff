@@ -17,7 +17,7 @@ jobs:
     - name: Set up JDK 17
       uses: actions/setup-java@v4 # Set up Java Development Kit
       with:
-        java-version: '17' # Specify Java 17, commonly used for modern Android projects
+        java-version: '21' # Specify Java 17, commonly used for modern Android projects
         distribution: 'temurin' # Use the Temurin distribution
         cache: gradle # Cache Gradle dependencies to speed up builds
 
