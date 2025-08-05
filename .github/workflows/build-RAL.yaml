@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: 'zacharee/RootActivityLauncher'
-          ref: 'main'
+          ref: 'master'
 
       # Set up JDK 17 for Android build
       - name: Set up JDK
