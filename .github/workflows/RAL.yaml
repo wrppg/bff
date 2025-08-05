@@ -1,0 +1,74 @@
+name: Android CI - RootActivityLauncher
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4 # Check out the RootActivityLauncher source code
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4 # Set up Java Development Kit
+      with:
+        java-version: '17' # Specify Java 17, commonly used for modern Android projects
+        distribution: 'temurin' # Use the Temurin distribution
+        cache: gradle # Cache Gradle dependencies to speed up builds
+
+    - name: Set up Android SDK
+      uses: actions/setup-android@v3 # Set up the Android SDK environment
+      with:
+        api-level: 34 # Install Android SDK Platform 34, as required by the project's compileSdk
+        build-tools: 34.0.0 # Install Android Build Tools 34.0.0
+        # NDK is not explicitly required by RootActivityLauncher's build.gradle, so it's omitted.
+
+    - name: Download and Install Modified Android JARs
+      run: |
+        # Determine the Android SDK Home path, which is usually set by actions/setup-android
+        ANDROID_SDK_ROOT=$(echo "$ANDROID_HOME")
+        echo "Detected ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
+
+        # Define the target Android API level for the modified JARs
+        API_LEVEL=34
+        TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-$API_LEVEL"
+
+        echo "Target directory for modified JARs: $TARGET_DIR"
+
+        # Create the target directory if it doesn't exist
+        mkdir -p "$TARGET_DIR" || { echo "Failed to create directory $TARGET_DIR"; exit 1; }
+
+        # Download the modified android.jar from Reginer/aosp-android-jar
+        echo "Downloading modified android.jar for API $API_LEVEL..."
+        curl -L -o "$TARGET_DIR/android.jar" "https://github.com/Reginer/aosp-android-jar/raw/android-$API_LEVEL/android.jar"
+        if [ $? -ne 0 ]; then
+          echo "Error: Failed to download android.jar"
+          exit 1
+        fi
+        echo "android.jar downloaded successfully."
+
+        # Download the modified framework.jar from Reginer/aosp-android-jar
+        echo "Downloading modified framework.jar for API $API_LEVEL..."
+        curl -L -o "$TARGET_DIR/framework.jar" "https://github.com/Reginer/aosp-android-jar/raw/android-$API_LEVEL/framework.jar"
+        if [ $? -ne 0 ]; then
+          echo "Error: Failed to download framework.jar"
+          exit 1
+        fi
+        echo "framework.jar downloaded successfully."
+
+        echo "Modified Android JARs installed into $TARGET_DIR."
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew # Ensure the Gradle wrapper script is executable
+
+    - name: Build with Gradle
+      run: ./gradlew assembleRelease # Execute the Gradle build to create the release APK
+
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4 # Upload the generated APK as a workflow artifact
+      with:
+        name: RootActivityLauncher-APK # Name of the artifact
+        path: app/build/outputs/apk/release/*.apk # Path to the release APK files
+        retention-days: 5 # Keep the artifact for 5 days
