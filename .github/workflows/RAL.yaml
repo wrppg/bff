@@ -21,12 +21,12 @@ jobs:
         distribution: 'temurin' # Use the Temurin distribution
         cache: gradle # Cache Gradle dependencies to speed up builds
 
-    - name: Set up Android SDK
-      uses: actions/setup-android@v3 # Set up the Android SDK environment
-      with:
-        api-level: 34 # Install Android SDK Platform 34, as required by the project's compileSdk
-        build-tools: 34.0.0 # Install Android Build Tools 34.0.0
-        # NDK is not explicitly required by RootActivityLauncher's build.gradle, so it's omitted.
+    # - name: Set up Android SDK
+    #   uses: actions/setup-android@v3 # Set up the Android SDK environment
+    #   with:
+    #     api-level: 34 # Install Android SDK Platform 34, as required by the project's compileSdk
+    #     build-tools: 34.0.0 # Install Android Build Tools 34.0.0
+    #     # NDK is not explicitly required by RootActivityLauncher's build.gradle, so it's omitted.
 
     - name: Download and Install Modified Android JARs
       run: |
