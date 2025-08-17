@@ -22,13 +22,15 @@ jobs:
         cache: 'gradle' # Cache Gradle dependencies to speed up builds
 
     - name: Download and Install Modified Android JARs
+      env:
+        API_LEVEL: 35
       run: |
         # Determine the Android SDK Home path, which is usually set by actions/setup-android
         ANDROID_SDK_ROOT=$(echo "$ANDROID_HOME")
         echo "Detected ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
 
         # Define the target Android API level for the modified JARs
-        API_LEVEL=35
+        # API_LEVEL=35
         TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-$API_LEVEL"
 
         echo "Target directory for modified JARs: $TARGET_DIR"
