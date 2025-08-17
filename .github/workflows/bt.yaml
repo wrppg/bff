@@ -1,10 +1,10 @@
-name: Build-tools
+name: LS
 
 on:
   workflow_dispatch:
 
 jobs:
-  build-and-release:
+  ls-tools:
     runs-on: ubuntu-latest
     
     permissions: write-all
