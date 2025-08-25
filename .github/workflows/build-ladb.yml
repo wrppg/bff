@@ -31,15 +31,13 @@ jobs:
           sed -E '/app_name/s|LADB|LADB-|' -i app/src/main/res/values/strings.xml
           sed -E '/applicationId/s|com\.draco\.ladb|com.draco.ladb_|' -i app/build.gradle
 
-      # Grant execute permission for gradlew
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-
       # Build release APK
       - name: Build release APK
         env: 
           RELEASE_ANTIPIRACY: false
-        run: ./gradlew assembleRelease
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleRelease
 
       # Extract version name from build.gradle
       - name: Extract version name
