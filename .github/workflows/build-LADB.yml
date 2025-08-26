@@ -8,7 +8,7 @@ env:
   APK_PATH_PREFIX: 'app/build/outputs/apk/release'
 
 jobs:
-  build-and-release:
+  build:
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository
@@ -36,7 +36,7 @@ jobs:
           RELEASE_ANTIPIRACY: false
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleRelease
+          ./gradlew :app:assembleRelease
 
       - name: List APKs
         run: find . -name '*.apk'
