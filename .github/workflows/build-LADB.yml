@@ -53,7 +53,9 @@ jobs:
         run: |
           echo "${KEYSTORE}" | base64 -d > apksign.keystore
           versionName=$( jq -r '.elements[0].versionName' app/build/outputs/apk/release/output-metadata.json )
-          for apk in ${APK_PATH_PREFIX}/*.apk; do ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD $apk; done
+          ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD ${APK_PATH_PREFIX}/*.apk
+          
+          # for apk in ${APK_PATH_PREFIX}/*.apk; do ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD $apk; done
 
       - name: Release
         env:
