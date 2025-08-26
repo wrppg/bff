@@ -1,8 +1,11 @@
-name: Android CI - RootActivityLauncher
+name: Build - RootActivityLauncher
 
 on:
   workflow_dispatch:
 
+env:
+  APP_NAME: "RootActivityLauncher"
+  
 jobs:
   build:
     runs-on: ubuntu-latest # Use the latest Ubuntu runner
@@ -49,3 +52,25 @@ jobs:
         name: RootActivityLauncher-APK                 # Name of the artifact
         path: app/build/outputs/apk/release/*.apk     # Path to the release APK files
         retention-days: 5                             # Keep the artifact for 5 days
+
+    - name: Sign APK
+      env:
+        KEYSTORE: ${{ secrets.SIGNING_KEY }}
+        SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+        APP_NAME: "RootActivityLauncher"
+      run: |
+        # version=$( grep "versionName" app/build.gradle | awk -F'"' '{print $2}' )
+        echo "${KEYSTORE}" | base64 -d > apksign.keystore
+        # ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD "app/build/outputs/apk/release/app-release-unsigned.apk"
+        # mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/"${APP_NAME}_v${version}.apk"
+        versionName=$( jq -r '.elements[0].versionName' app/build/outputs/apk/release/output-metadata.json )
+        for apk in app/build/outputs/apk/release/*.apk; do ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD $apk; done
+
+    - name: Release
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        versionName=$( jq -r '.elements[0].versionName' app/build/outputs/apk/release/output-metadata.json )
+        gh release create "${versionName}-${APP_NAME}" --title "${APP_NAME} ${versionName}" --draft app/build/outputs/apk/release/*.apk
+        # gh release upload "${versionName}-${APP_NAME}" app/build/outputs/apk/release/*.apk
+
