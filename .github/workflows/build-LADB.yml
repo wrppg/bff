@@ -62,7 +62,8 @@ jobs:
 
       - name: Release
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GH_APK_REPO }}
+          # GH_TOKEN: ${{ github.token }}
         run: |
           versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
           mv ${APK_PATH_PREFIX}/app-release-unsigned.apk ${APK_PATH_PREFIX}/${APP_NAME}-${versionName}.apk
