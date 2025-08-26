@@ -1,11 +1,11 @@
-name: Build and Release LADB APK
+name: Build - LADB
 
 on:
   workflow_dispatch:
 
 env:
-  APP_NAME: LADB-
-  APP_ID: com.draco.ladb_
+  APP_NAME: "LADB"
+  APK_PATH_PREFIX: 'app/build/outputs/apk/release'
 
 jobs:
   build-and-release:
@@ -26,12 +26,11 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
-      - name: Change app and package name
-        run: |
-          sed -E '/app_name/s|LADB|LADB-|' -i app/src/main/res/values/strings.xml
-          sed -E '/applicationId/s|com\.draco\.ladb|com.draco.ladb_|' -i app/build.gradle
+      # - name: Change app and package name
+      #   run: |
+      #     sed -E '/app_name/s|LADB|LADB-|' -i app/src/main/res/values/strings.xml
+      #     sed -E '/applicationId/s|com\.draco\.ladb|com.draco.ladb_|' -i app/build.gradle
 
-      # Build release APK
       - name: Build release APK
         env: 
           RELEASE_ANTIPIRACY: false
@@ -39,41 +38,28 @@ jobs:
           chmod +x ./gradlew
           ./gradlew assembleRelease
 
-      # Extract version name from build.gradle
-      - name: Extract version name
-        id: extract_version
-        run: |
-          VERSION_NAME=$(grep "versionName" app/build.gradle | awk '{print $2}' | tr -d '"')
-          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
-          echo "Extracted version: $VERSION_NAME"
+      # # Extract version name from build.gradle
+      # - name: Extract version name
+      #   id: extract_version
+      #   run: |
+      #     VERSION_NAME=$(grep "versionName" app/build.gradle | awk '{print $2}' | tr -d '"')
+      #     echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+      #     echo "Extracted version: $VERSION_NAME"
 
-      # Sign the APK
       - name: Sign APK
-        id: sign_apk
-        uses: ilharp/sign-android-release@v2
-        with:
-          releaseDir: app/build/outputs/apk/release
-          signingKey: ${{ secrets.SIGNING_KEY }}
-          keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          buildToolsVersion: 36.0.0
-
-      - name: ls *.apk
-        run: ls app/build/outputs/apk/release/*.apk
-
-      - name: rm
+        env:
+          KEYSTORE: ${{ secrets.SIGNING_KEY }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
         run: |
-          rm app/build/outputs/apk/release/*-{unsigned,temp}.apk
-          ls app/build/outputs/apk/release/
+          echo "${KEYSTORE}" | base64 -d > apksign.keystore
+          versionName=$( jq -r '.elements[0].versionName' app/build/outputs/apk/release/output-metadata.json )
+          for apk in ${APK_PATH_PREFIX}/*.apk; do ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD $apk; done
 
-      # Create GitHub Release and upload APK
-      - name: Create Release and Upload APK
-        uses: softprops/action-gh-release@v2
-        if: success()
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: ${{ github.ref_name }}
-          name: LADB Release ${{ env.VERSION_NAME }}
-      #    body: Automated release for LADB version ${{ env.VERSION_NAME }}
-          files: app/build/outputs/apk/release/*-signed.apk
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
+          mv ${APK_PATH_PREFIX}/app-release-unsigned.apk ${APK_PATH_PREFIX}/${APP_NAME}-${versionName}.apk
+          gh release create "${versionName}-${APP_NAME}" --title "${APP_NAME} ${versionName}" --draft --repo wrppg/bff ${APK_PATH_PREFIX}/*.apk
+          # gh release upload "${versionName}-${APP_NAME}" ${APK_PATH_PREFIX}/*.apk
