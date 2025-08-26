@@ -68,7 +68,8 @@ jobs:
 
     - name: Release
       env:
-        GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ secrets.GH_APK_REPO }}
+        # GH_TOKEN: ${{ github.token }}
       run: |
         versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
         gh release create "${versionName}-${APP_NAME}" --title "${APP_NAME} ${versionName}" --draft --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
