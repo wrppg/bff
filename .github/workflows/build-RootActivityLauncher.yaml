@@ -62,11 +62,8 @@ jobs:
         KEYSTORE: ${{ secrets.SIGNING_KEY }}
         SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
       run: |
-        # version=$( grep "versionName" app/build.gradle | awk -F'"' '{print $2}' )
-        echo "${KEYSTORE}" | base64 -d > apksign.keystore
-        # ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD "app/build/outputs/apk/release/app-release-unsigned.apk"
-        # mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/"${APP_NAME}_v${version}.apk"
         versionName=$( jq -r '.elements[0].versionName' app/build/outputs/apk/release/output-metadata.json )
+        echo "${KEYSTORE}" | base64 -d > apksign.keystore
         for apk in ${APK_PATH_PREFIX}/*.apk; do ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD $apk; done
 
     - name: Release
