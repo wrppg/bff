@@ -67,5 +67,5 @@ jobs:
         run: |
           versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
           mv ${APK_PATH_PREFIX}/app-release-unsigned.apk ${APK_PATH_PREFIX}/${APP_NAME}-${versionName}.apk
-          gh release create "${versionName}-${APP_NAME}" --title "${APP_NAME} ${versionName}" --draft --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
+          gh release create "${versionName}-${APP_NAME}" --title "${APP_NAME} ${versionName}" --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
           # gh release upload "${versionName}-${APP_NAME}" ${APK_PATH_PREFIX}/*.apk
