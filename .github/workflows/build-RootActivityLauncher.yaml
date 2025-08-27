@@ -42,7 +42,10 @@ jobs:
         curl -L -o "$TARGET_DIR/android.jar" "https://github.com/Reginer/aosp-android-jar/raw/refs/heads/main/android-${API_LEVEL}/android.jar"
         [[ $? -ne 0 ]] && exit 1
         echo "android.jar downloaded successfully."
-
+      
+    # - name: Change versionCode To Max INT
+    #   run: sed -E '/^\s*versionCode/s/[0-9]+$/2147483647/' -i app/build.gradle
+    
     - name: Build with Gradle
       run: |
         chmod +x gradlew
