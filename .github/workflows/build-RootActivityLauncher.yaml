@@ -26,19 +26,20 @@ jobs:
         cache: 'gradle' # Cache Gradle dependencies to speed up builds
 
     - name: Download and Install Modified Android JARs
-      env:
-        API_LEVEL: 35
       run: |
         # see https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
         # for pre-defined Environment variables (i.e. ANDROID_HOME, ANDROID_SDK_ROOT)
+
+        API_LEVEL=$(curl -sL https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle.kts | awk '/compileSdk/ {print $3; exit}')
+        echo "Extract API_LEVEL: ${API_LEVEL}"
         
-        TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-$API_LEVEL"
+        TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-${API_LEVEL}"
 
         # Create the target directory if it doesn't exist
         mkdir -p "$TARGET_DIR" || { echo "Failed to create directory $TARGET_DIR"; exit 1; }
 
         # Download the modified android.jar from Reginer/aosp-android-jar
-        curl -L -o "$TARGET_DIR/android.jar" "https://github.com/Reginer/aosp-android-jar/raw/refs/heads/main/android-$API_LEVEL/android.jar"
+        curl -L -o "$TARGET_DIR/android.jar" "https://github.com/Reginer/aosp-android-jar/raw/refs/heads/main/android-${API_LEVEL}/android.jar"
         [[ $? -ne 0 ]] && exit 1
         echo "android.jar downloaded successfully."
 
