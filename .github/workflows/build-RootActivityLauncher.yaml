@@ -6,6 +6,7 @@ on:
 env:
   APP_NAME: "RootActivityLauncher"
   APK_PATH_PREFIX: 'app/build/outputs/apk/release'
+  FLAV: ''
   
 jobs:
   build:
@@ -76,7 +77,7 @@ jobs:
         # GH_TOKEN: ${{ github.token }}
       run: |
         versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
-        gh release create "${versionName}_${APP_NAME}" --title "${APP_NAME} ${versionName}" --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
+        gh release create "${versionName}-${APP_NAME}" --title "${APP_NAME} ${versionName}" --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
         
         # gh release upload "${versionName}-${APP_NAME}" ${APK_PATH_PREFIX}/*.apk
 
