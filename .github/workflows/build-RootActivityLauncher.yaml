@@ -70,7 +70,7 @@ jobs:
         KEYSTORE: ${{ secrets.SIGNING_KEY }}
         SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
       run: |
-        versionName=$( jq -r '.elements[0].versionName' app/build/outputs/apk/release/output-metadata.json )
+        versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
         echo "${KEYSTORE}" | base64 -d > apksign.keystore
         for apk in ${APK_PATH_PREFIX}/*.apk; do ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD $apk; done
 
