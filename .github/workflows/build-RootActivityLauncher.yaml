@@ -31,7 +31,7 @@ jobs:
         # for pre-defined Environment variables (i.e. ANDROID_HOME, ANDROID_SDK_ROOT)
 
         API_LEVEL=$(curl -sL https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle.kts | awk '/compileSdk/ {print $3; exit}')
-        echo "Extract API_LEVEL: ${API_LEVEL}"
+        echo ${API_LEVEL} | grep -E '^[0-9]+$' || exit 1
         
         TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-${API_LEVEL}"
 
@@ -77,5 +77,6 @@ jobs:
       run: |
         versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
         gh release create "${versionName}_${APP_NAME}" --title "${APP_NAME} ${versionName}" --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
+        
         # gh release upload "${versionName}-${APP_NAME}" ${APK_PATH_PREFIX}/*.apk
 
