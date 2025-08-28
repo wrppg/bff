@@ -6,6 +6,7 @@ on:
 env:
   APP_NAME: "LADB"
   APK_PATH_PREFIX: "app/build/outputs/apk/release"
+  NEW_APP_ID: 'bff.ladb'
   FLAV: ""
 
 jobs:
@@ -30,7 +31,10 @@ jobs:
 
       - name: Change app and package name
         run: |
-          sed -E '/applicationId /s|com\.draco\.ladb|bff.ladb|' -i app/build.gradle
+          APP_ID=$(awk -F '"' '/applicationId / {print $2; exit}' app/build.gradle)
+          sed -E "/applicationId /s|${APP_ID}|${NEW_APP_ID}|" -i app/build.gradle
+          
+          # sed -E '/applicationId /s|com\.draco\.ladb|bff.ladb|' -i app/build.gradle
           # sed -E '/app_name/s|LADB|LADB-|' -i app/src/main/res/values/strings.xml
 
       - name: Build release APK
