@@ -6,6 +6,7 @@ on:
 env:
   APP_NAME: "RootActivityLauncher"
   APK_PATH_PREFIX: "app/build/outputs/apk/release"
+  NEW_APP_ID: 'bff.rootactivitylauncher'
   FLAV: ""
 
 jobs:
@@ -13,14 +14,12 @@ jobs:
     runs-on: ubuntu-latest # Use the latest Ubuntu runner
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           repository: "zacharee/RootActivityLauncher"
           ref: "master"
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4 # Set up Java Development Kit
+      - uses: actions/setup-java@v4
         with:
           java-version: "17"
           distribution: "temurin"
@@ -44,10 +43,17 @@ jobs:
           [[ $? -ne 0 ]] && exit 1
           echo "android.jar downloaded successfully."
 
-      # - name: Change versionCode To Max INT
-      #   run: >
-      #         sed -E '/^\s*versionCode/s/[0-9]+$/2147483647/' -i app/build.gradle || \
-      #         sed -E '/^\s*versionCode/s/[0-9]+$/2147483647/' -i app/build.gradle.kts
+      - name: Change versionCode To Max INT
+        run: >
+              sed -E '/^\s*versionCode/s/[0-9]+$/2147483647/' -i app/build.gradle || \
+              sed -E '/^\s*versionCode/s/[0-9]+$/2147483647/' -i app/build.gradle.kts
+      
+      - name: Change app and package name
+        run: >
+          APP_ID=$(awk -F '"' '/applicationId / {print $2; exit}' app/build.gradle) && \
+          sed -E "/applicationId /s|${APP_ID}|${NEW_APP_ID}|" -i app/build.gradle || \
+          { APP_ID=$(awk -F '"' '/applicationId / {print $2; exit}' app/build.gradle.kts) ; \
+          sed -E "/applicationId /s|${APP_ID}|${NEW_APP_ID}|" -i app/build.gradle.kts; }
 
       - name: Build with Gradle
         run: |
