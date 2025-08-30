@@ -30,4 +30,5 @@ jobs:
           ls ${ANDROID_HOME}/build-tools/*
       
       - run: |
+          pwd
           ls
