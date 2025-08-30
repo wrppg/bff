@@ -66,7 +66,7 @@ jobs:
           APK_PATH="app/build/outputs/apk/${FLAV:+$FLAV/}release"
           APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
           echo "APK_PATH_PREFIX=${APK_PATH}" >> $GITHUB_ENV
-          echo "APK_UNSIGNED_NAME=${APK_PATH}" >> $GITHUB_ENV
+          echo "APK_UNSIGNED_NAME=${APK_UNSIGNED_NAME}" >> $GITHUB_ENV
 
       - name: Sign APK
         env:
