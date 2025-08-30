@@ -51,7 +51,7 @@ jobs:
           ./gradlew :app:assemble${FLAV^}Release
 
       - name: List APKs
-        run: find . -name '*.apk'
+        run: find app -name '*.apk'
 
       - name: Set Env
         run: |
