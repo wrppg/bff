@@ -74,14 +74,24 @@ jobs:
       #     path: app/build/outputs/apk/release/*.apk     # Path to the release APK files
       #     retention-days: 5                             # Keep the artifact for 5 days
 
+      - name: Set Env
+        run: |
+          APK_PATH="app/build/outputs/apk/${FLAV:+$FLAV/}release"
+          APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
+          echo "APK_PATH_PREFIX=${APK_PATH}" >> $GITHUB_ENV
+          echo "APK_UNSIGNED_NAME=${APK_PATH}" >> $GITHUB_ENV
+
       - name: Sign APK
         env:
           KEYSTORE: ${{ secrets.SIGNING_KEY }}
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
         run: |
-          versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
           echo "${KEYSTORE}" | base64 -d > apksign.keystore
-          for apk in ${APK_PATH_PREFIX}/*.apk; do ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD $apk; done
+          versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
+          # APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
+          ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD ${APK_PATH_PREFIX}/${APK_UNSIGNED_NAME}
+
+          # for apk in ${APK_PATH_PREFIX}/*.apk; do ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD $apk; done
 
       - name: Release
         env:
@@ -89,6 +99,8 @@ jobs:
           # GH_TOKEN: ${{ github.token }}
         run: |
           versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
-          gh release create "${versionName}-${APP_NAME}" --title "${APP_NAME} ${versionName}" --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
-
-          # gh release upload "${versionName}-${APP_NAME}" ${APK_PATH_PREFIX}/*.apk
+          # APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
+          mv ${APK_PATH_PREFIX}/${APK_UNSIGNED_NAME} ${APK_PATH_PREFIX}/${APK_NAME}_${versionName}.apk
+          gh release create "${versionName}-${APK_NAME}" --title "${APK_NAME} ${versionName}" --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
+          
+          # gh release upload "${versionName}-${APK_NAME}" ${APK_PATH_PREFIX}/*.apk
