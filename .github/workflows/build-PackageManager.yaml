@@ -27,6 +27,10 @@ jobs:
       - name: Change versionCode To Max INT
         run: |
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
+          # Do this because some use versionName = versionCode.toString() #
+          OLD_VER_CODE=$(awk '/^\s*versionCode/ {print $NF; exit}' $BUILD_GRADLE)
+          sed -E "/^\s*versionName/s/versionCode\.toString\(\)/\"${OLD_VER_CODE}\"/" -i $BUILD_GRADLE
+          #
           sed -E '/^\s*versionCode/s/[0-9]+$/2147483647/' -i $BUILD_GRADLE
 
       - name: Change app and package name
@@ -53,9 +57,11 @@ jobs:
       - name: Set Env
         run: |
           APK_PATH_PREFIX="app/build/outputs/apk/${FLAV:+$FLAV/}release"
-          APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
+          # APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
+          APK_FILE=$(find ${APK_PATH_PREFIX} \( -iname "app${FLAV:+"-$FLAV"}-release-unsigned.apk" -o -iname "app${FLAV:+"-$FLAV"}-release.apk" -o -iname '*arm64-v8*' \) -print -quit)
           echo "APK_PATH_PREFIX=${APK_PATH_PREFIX}" >> $GITHUB_ENV
           echo "APK_UNSIGNED_NAME=${APK_UNSIGNED_NAME}" >> $GITHUB_ENV
+          echo "APK_FILE=${APK_FILE}" >> $GITHUB_ENV
 
       - name: Sign APK
         env:
@@ -65,9 +71,9 @@ jobs:
           echo "${KEYSTORE}" | base64 -d > apksign.keystore
           versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
           # APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
-          ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD ${APK_PATH_PREFIX}/${APK_UNSIGNED_NAME}
+          # ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD ${APK_PATH_PREFIX}/${APK_UNSIGNED_NAME}
 
-          # for apk in ${APK_PATH_PREFIX}/*.apk; do ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD $apk; done
+          for apk in ${APK_PATH_PREFIX}/*.apk; do ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD $apk; done
 
       - name: Release
         env:
@@ -76,6 +82,8 @@ jobs:
         run: |
           versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
           # APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
-          mv ${APK_PATH_PREFIX}/${APK_UNSIGNED_NAME} ${APK_PATH_PREFIX}/${APK_NAME}_${versionName}.apk
+          # mv ${APK_PATH_PREFIX}/${APK_UNSIGNED_NAME} ${APK_PATH_PREFIX}/${APK_NAME}_${versionName}.apk
+          mv ${APK_FILE} ${APK_PATH_PREFIX}/${APK_NAME}_${versionName}.apk
           gh release create "${versionName}-${APK_NAME}" --title "${APK_NAME} ${versionName}" --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
+
           # gh release upload "${versionName}-${APK_NAME}" ${APK_PATH_PREFIX}/*.apk
