@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  APP_NAME: "RootActivityLauncher"
+  APK_NAME: "RootActivityLauncher"
   APK_PATH_PREFIX: "app/build/outputs/apk/release"
   NEW_APP_ID: "bff.rootactivitylauncher"
   FLAV: ""
