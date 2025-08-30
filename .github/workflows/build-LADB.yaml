@@ -6,7 +6,7 @@ on:
 env:
   APK_NAME: "LADB"
   # APK_PATH_PREFIX: "app/build/outputs/apk/release"
-  NEW_APP_ID: 'bff.ladb'
+  NEW_APP_ID: "bff.ladb"
   FLAV: ""
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          distribution: "zulu"
+          distribution: "temurin"
           java-version: "17"
           cache: "gradle"
 
@@ -34,7 +34,7 @@ jobs:
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
           APP_ID=$(awk -F '"' '/applicationId( |=)/ {print $2; exit}' $BUILD_GRADLE)
           sed -E "/applicationId( |=)/s|${APP_ID}|${NEW_APP_ID}|" -i $BUILD_GRADLE
-          
+
           # sed -E '/applicationId( |=)/s|com\.draco\.ladb|bff.ladb|' -i app/build.gradle
           # sed -E '/app_name/s|LADB|LADB-|' -i app/src/main/res/values/strings.xml
 
@@ -48,7 +48,7 @@ jobs:
           RELEASE_ANTIPIRACY: false
         run: |
           chmod +x ./gradlew
-             ./gradlew :app:assemble${FLAV^}Release
+          ./gradlew :app:assemble${FLAV^}Release
 
       - name: List APKs
         run: find . -name '*.apk'
@@ -89,5 +89,5 @@ jobs:
           # APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
           mv ${APK_PATH_PREFIX}/${APK_UNSIGNED_NAME} ${APK_PATH_PREFIX}/${APK_NAME}_${versionName}.apk
           gh release create "${versionName}-${APK_NAME}" --title "${APK_NAME} ${versionName}" --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
-          
+
           # gh release upload "${versionName}-${APK_NAME}" ${APK_PATH_PREFIX}/*.apk

@@ -6,7 +6,7 @@ on:
 env:
   APK_NAME: "PackageManagerPro"
   # APK_PATH_PREFIX: "app/build/outputs/apk/pro/release"
-  NEW_APP_ID: 'bff.packagemanager'
+  NEW_APP_ID: "bff.packagemanager"
   FLAV: "pro"
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          distribution: "zulu"
+          distribution: "temurin"
           java-version: "17"
           cache: "gradle"
 
@@ -28,7 +28,7 @@ jobs:
         run: >
           sed -E '/^\s*versionCode/s/[0-9]+$/2147483647/' -i app/build.gradle || \
           sed -E '/^\s*versionCode/s/[0-9]+$/2147483647/' -i app/build.gradle.kts
-      
+
       - name: Change app and package name
         run: |
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
@@ -39,7 +39,7 @@ jobs:
         run: |
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
           sed -E '/archives(Base)*Name/d' -i $BUILD_GRADLE
-      
+
       - name: Build release APK
         env:
           RELEASE_ANTIPIRACY: false
