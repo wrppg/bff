@@ -54,15 +54,7 @@ jobs:
           ./gradlew :app:assemble${FLAV^}Release
 
       - name: List APKs
-        run: find . -name '*.apk'
-
-      # # Extract version name from build.gradle
-      # - name: Extract version name
-      #   id: extract_version
-      #   run: |
-      #     VERSION_NAME=$(grep "versionName" app/build.gradle | awk '{print $2}' | tr -d '"')
-      #     echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
-      #     echo "Extracted version: $VERSION_NAME"
+        run: find app -name '*.apk'
 
       - name: Set Env
         run: |
