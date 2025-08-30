@@ -48,7 +48,7 @@ jobs:
           RELEASE_ANTIPIRACY: false
         run: |
           chmod +x ./gradlew
-          ./gradlew :app:assembleRelease
+             ./gradlew :app:assemble${FLAV^}Release
 
       - name: List APKs
         run: find . -name '*.apk'
