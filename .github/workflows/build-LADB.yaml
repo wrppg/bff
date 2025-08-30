@@ -68,7 +68,7 @@ jobs:
           echo "APK_PATH_PREFIX=${APK_PATH}" >> $GITHUB_ENV
           echo "APK_UNSIGNED_NAME=${APK_PATH}" >> $GITHUB_ENV
 
-         - name: Sign APK
+      - name: Sign APK
         env:
           KEYSTORE: ${{ secrets.SIGNING_KEY }}
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
