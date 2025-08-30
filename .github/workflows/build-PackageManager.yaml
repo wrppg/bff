@@ -5,7 +5,7 @@ on:
 
 env:
   APP_NAME: "PackageManagerPro"
-  APK_PATH_PREFIX: "app/build/outputs/apk/pro/release"
+  # APK_PATH_PREFIX: "app/build/outputs/apk/pro/release"
   NEW_APP_ID: 'bff.packagemanager'
   FLAV: "pro"
 
@@ -49,6 +49,11 @@ jobs:
 
       - name: List APKs
         run: find . -name '*.apk'
+
+      - name: Set Env
+        run: |
+          APK_PATH="app/build/outputs/apk/${FLAV:+$FLAV/}release"
+          echo "APK_PATH_PREFIX=${APK_PATH}" >> $GITHUB_ENV
 
       - name: Sign APK
         env:
