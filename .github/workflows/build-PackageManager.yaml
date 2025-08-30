@@ -32,10 +32,10 @@ jobs:
       - name: Change app and package name
         run: |
           BUILD_GRADLE=$(find app -maxdepth 1 -name 'build.gradle' -or -name 'build.gradle.kts')
-          APP_ID=$(awk -F '"' '/applicationId / {print $2; exit}' $BUILD_GRADLE)
-          sed -E "/applicationId /s|${APP_ID}|${NEW_APP_ID}|" -i $BUILD_GRADLE
+          APP_ID=$(awk -F '"' '/applicationId( |=)/ {print $2; exit}' $BUILD_GRADLE)
+          sed -E "/applicationId( |=)/s|${APP_ID}|${NEW_APP_ID}|" -i $BUILD_GRADLE
           
-          # sed -E '/applicationId /s|com\.smartpack\.packagemanager|bff.packagemanager|' -i app/build.gradle
+          # sed -E '/applicationId( |=)/s|com\.smartpack\.packagemanager|bff.packagemanager|' -i app/build.gradle
           # sed -E '/app_name/s|LADB|LADB-|' -i app/src/main/res/values/strings.xml
       
       - name: Build release APK

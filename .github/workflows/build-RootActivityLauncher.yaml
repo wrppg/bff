@@ -51,8 +51,8 @@ jobs:
       - name: Change app and package name
         run: >
           BUILD_GRADLE=$(find app -maxdepth 1 -name 'build.gradle' -or -name 'build.gradle.kts')
-          APP_ID=$(awk -F '"' '/applicationId / {print $2; exit}' $BUILD_GRADLE)
-          sed -E "/applicationId /s|${APP_ID}|${NEW_APP_ID}|" -i $BUILD_GRADLE
+          APP_ID=$(awk -F '"' '/applicationId( |=)/ {print $2; exit}' $BUILD_GRADLE)
+          sed -E "/applicationId( |=)/s|${APP_ID}|${NEW_APP_ID}|" -i $BUILD_GRADLE
 
       - name: Build with Gradle
         run: |
