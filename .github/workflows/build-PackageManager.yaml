@@ -5,7 +5,6 @@ on:
 
 env:
   APK_NAME: "PackageManagerPro"
-  # APK_PATH_PREFIX: "app/build/outputs/apk/pro/release"
   NEW_APP_ID: "bff.packagemanager"
   FLAV: "pro"
 
