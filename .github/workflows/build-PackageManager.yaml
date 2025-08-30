@@ -55,7 +55,8 @@ jobs:
         run: |
           echo "${KEYSTORE}" | base64 -d > apksign.keystore
           versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
-          ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD ${APK_PATH_PREFIX}/app-${FLAV:-""}${FLAV:+-}release-unsigned.apk
+          APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
+          ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD ${APK_PATH_PREFIX}/${APK_UNSIGNED_NAME}
 
           # for apk in ${APK_PATH_PREFIX}/*.apk; do ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD $apk; done
 
@@ -65,6 +66,7 @@ jobs:
           # GH_TOKEN: ${{ github.token }}
         run: |
           versionName=$( jq -r '.elements[0].versionName' ${APK_PATH_PREFIX}/output-metadata.json )
-          mv ${APK_PATH_PREFIX}/app-${FLAV:-""}${FLAV:+-}release-unsigned.apk ${APK_PATH_PREFIX}/${APP_NAME}_${versionName}.apk
+          APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
+          mv ${APK_PATH_PREFIX}/${APK_UNSIGNED_NAME} ${APK_PATH_PREFIX}/${APP_NAME}_${versionName}.apk
           gh release create "${versionName}-${APP_NAME}" --title "${APP_NAME} ${versionName}" --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
           # gh release upload "${versionName}-${APP_NAME}" ${APK_PATH_PREFIX}/*.apk
