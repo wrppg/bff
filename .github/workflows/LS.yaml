@@ -28,3 +28,6 @@ jobs:
           echo ${ANDROID_HOME}
           ls ${ANDROID_HOME}/*
           ls ${ANDROID_HOME}/build-tools/*
+
+      - run: |
+          echo ${{{ github.repository }}
