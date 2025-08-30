@@ -30,7 +30,7 @@ jobs:
           # see https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
           # for pre-defined Environment variables (i.e. ANDROID_HOME, ANDROID_SDK_ROOT)
 
-          API_LEVEL=$(curl -sL https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle.kts | awk '/compileSdk/ {print $NF; exit}')
+          API_LEVEL=$(curl -sL https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle.kts | awk '/compileSdk( |=)/ {print $NF; exit}')
           echo ${API_LEVEL} | grep -E '^[0-9]+$' || exit 1
 
           TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-${API_LEVEL}"
