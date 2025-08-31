@@ -20,7 +20,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
           cache: "gradle"
-          
+
       - name: Download and Install Modified Android JARs
         run: |
           # see https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
