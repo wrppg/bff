@@ -57,6 +57,7 @@ jobs:
           ### This is the recommended practice for defining the application name
           ### If someone uses a name other than app_name, then find the android:label from this command.
           ### xq -j app/src/main/AndroidManifest.xml | jq -r '.manifest.application."@label"' | cut -f2 -d'/'
+          ### https://github.com/sibprogrammer/xq/
           ### Maybe loop through (find app -name '*.xml')
           APP_NAME=$(awk -F'[<>]' '/name="app_name"/ {print $3}' app/src/main/res/values/strings.xml)
           for xml in $(find app -name '*.xml' -exec grep -l "app_name" {} + ); do
