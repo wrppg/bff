@@ -21,6 +21,16 @@ jobs:
           java-version: "17"
           cache: "gradle"
 
+      - uses: actions/checkout@v4
+        with:
+          path: 'patch'
+          
+      - name: Patch source code
+        run: |
+          curl -L https://github.com/ast-grep/ast-grep/releases/download/0.39.4/app-x86_64-unknown-linux-gnu.zip | tar xz
+          chmod +x ./ast-grep ./sg
+          ./ast-grep scan --rule ./patch/patch-Inure.yaml --update-all app/src/main/java/app/simple/inure/viewmodels/launcher/LauncherViewModel.kt
+      
       - name: Change versionCode To Max INT
         run: |
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
