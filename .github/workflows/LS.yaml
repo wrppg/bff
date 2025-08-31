@@ -34,3 +34,6 @@ jobs:
       - run: |
           pwd
           ls
+      - run: |
+          curl \
+          https://example.com
