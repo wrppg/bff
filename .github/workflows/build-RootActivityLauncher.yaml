@@ -53,6 +53,11 @@ jobs:
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
           APP_ID=$(awk -F '"' '/applicationId( |=)/ {print $2; exit}' $BUILD_GRADLE)
           APP_NAME=$(awk -F'[<>]' '/name="app_name"/ {print $3}' app/src/main/res/values/strings.xml)
+          for xml in $(find . -name '*.xml' -exec grep -l "app_name" {} + ); do
+            if [ -n "${APP_NAME}" ]; then
+              break;
+            fi; done
+            APP_NAME=$(awk -F'[<>]' '/name="app_name"/ {print $3}' $xml);
           APP_NAME="${APP_NAME// /}"
           NEW_APP_ID="bff.${APP_NAME,,}"
           sed -E "/applicationId( |=)/s|${APP_ID}|${NEW_APP_ID}|" -i $BUILD_GRADLE
