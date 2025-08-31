@@ -38,8 +38,9 @@ jobs:
           for xml in $(find . -name '*.xml' -exec grep -l "app_name" {} + ); do
             if [ -n "${APP_NAME}" ]; then
               break;
-            fi; done
+            fi;
             APP_NAME=$(awk -F'[<>]' '/name="app_name"/ {print $3}' $xml);
+          done
           APP_NAME="${APP_NAME// /}"
           NEW_APP_ID="bff.${APP_NAME,,}${FLAV:+".$FLAV"}"
           sed -E "/applicationId( |=)/s|${APP_ID}|${NEW_APP_ID}|" -i $BUILD_GRADLE
