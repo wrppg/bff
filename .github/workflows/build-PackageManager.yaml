@@ -85,6 +85,5 @@ jobs:
           # APK_UNSIGNED_NAME="app${FLAV:+"-$FLAV"}-release-unsigned.apk"
           # mv ${APK_PATH_PREFIX}/${APK_UNSIGNED_NAME} ${APK_PATH_PREFIX}/${APK_NAME}_${versionName}.apk
           mv ${APK_FILE} ${APK_PATH_PREFIX}/${APK_NAME}_${versionName}.apk
-          gh release create "${versionName}-${APK_NAME}" --title "${APK_NAME} ${versionName}" --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk
-
+          gh release create "${versionName}-${APP_NAME}" --title "${APP_NAME} ${versionName}" --repo wrppg/apk ${APK_PATH_PREFIX}/*.apk --notes $'Automate build\n'"update to ${versionName}"
           # gh release upload "${versionName}-${APK_NAME}" ${APK_PATH_PREFIX}/*.apk
