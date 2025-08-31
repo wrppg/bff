@@ -1,0 +1,16 @@
+id: patch app/src/main/java/app/simple/inure/viewmodels/launcher/LauncherViewModel.kt
+language: Kotlin
+rule:
+  kind: statements
+  inside:
+    pattern: fun initCheck() { $$$A }
+    stopBy:
+      kind: function_declaration
+
+fix: |-
+  if ( ! TrialPreferences.hasLicenceKey() ) {
+                TrialPreferences.setFullVersion(true)
+                TrialPreferences.setUnlockerVerificationRequired(false)
+                TrialPreferences.setHasLicenceKey(true)
+  }
+  $$$A

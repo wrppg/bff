@@ -1,0 +1,21 @@
+id: patch IAB.java
+language: Java
+rule:
+  any:
+    - kind: block
+      inside:
+        pattern: public boolean isPurchased($$$) throws $$$ {$BODY}
+        stopBy:
+          kind: method_declaration
+    - kind: block
+      inside:
+        pattern: public boolean isPurchased($$$) {$$$}
+        stopBy:
+          kind: method_declaration
+    - kind: block
+      inside:
+        pattern: public boolean isPurchasedAny($$$) {$$$}
+        stopBy:
+          kind: method_declaration
+fix: |-
+  { return true; }
