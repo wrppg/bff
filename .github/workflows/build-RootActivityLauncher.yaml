@@ -65,6 +65,8 @@ jobs:
             fi;
             APP_NAME=$(awk -F'[<>]' '/name="app_name"/ {print $3}' $xml);
           done
+          # Sometime they set this way
+          [[ -z "${APP_NAME}" ]] && APP_NAME=$(awk -F'[,"]' '/resValue.*app_name/ {print $(NF-1)}' $BUILD_GRADLE)
           APP_NAME="${APP_NAME// /}"
           NEW_APP_ID="bff.${APP_NAME,,}${FLAV:+".$FLAV"}"
           sed -E "/applicationId( |=)/s|${APP_ID}|${NEW_APP_ID}|" -i $BUILD_GRADLE
