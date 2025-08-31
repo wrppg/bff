@@ -12,8 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: 'Hamza417/Inure'
-          ref: 'master'
+          repository: "Hamza417/Inure"
+          ref: "master"
 
       - uses: actions/setup-java@v4
         with:
@@ -23,14 +23,14 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          path: 'patch'
-          
+          path: "patch"
+
       - name: Patch source code
         run: |
           curl -L https://github.com/ast-grep/ast-grep/releases/download/0.39.4/app-x86_64-unknown-linux-gnu.zip | tar xz
           chmod +x ./ast-grep ./sg
           ./ast-grep scan --rule ./patch/patch-Inure.yaml --update-all app/src/main/java/app/simple/inure/viewmodels/launcher/LauncherViewModel.kt
-      
+
       - name: Change versionCode To Max INT
         run: |
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
@@ -71,7 +71,7 @@ jobs:
           sed -E '/archives(Base)*Name/d' -i $BUILD_GRADLE
 
       - run: yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
-      
+
       - name: Build release APK
         run: |
           chmod +x ./gradlew
