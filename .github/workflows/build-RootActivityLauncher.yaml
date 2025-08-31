@@ -19,8 +19,8 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-          cache: "gradle" # Cache Gradle dependencies to speed up builds
-
+          cache: "gradle"
+          
       - name: Download and Install Modified Android JARs
         run: |
           # see https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
