@@ -34,8 +34,14 @@ jobs:
         run: |
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
           APP_ID=$(awk -F '"' '/applicationId( |=)/ {print $2; exit}' $BUILD_GRADLE)
+          ### The android:label attribute within the <application> tag of the AndroidManifest.xml file specifies the name of the Android application
+          ### android:label="@string/app_name" references a string resource named app_name.
+          ### This is the recommended practice for defining the application name
+          ### If someone uses a name other than app_name, then find the android:label from this command.
+          ### xq -j app/src/main/AndroidManifest.xml | jq -r '.manifest.application."@label"' | cut -f2 -d'/'
+          ### Maybe loop through (find app -name '*.xml')
           APP_NAME=$(awk -F'[<>]' '/name="app_name"/ {print $3}' app/src/main/res/values/strings.xml)
-          for xml in $(find . -name '*.xml' -exec grep -l "app_name" {} + ); do
+          for xml in $(find app -name '*.xml' -exec grep -l "app_name" {} + ); do
             if [ -n "${APP_NAME}" ]; then
               break;
             fi;
