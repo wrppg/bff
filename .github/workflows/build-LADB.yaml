@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
 
 env:
-  APK_NAME: "LADB"
-  NEW_APP_ID: "bff.ladb"
   FLAV: ""
 
 jobs:
@@ -26,17 +24,21 @@ jobs:
       - name: Change versionCode To Max INT
         run: |
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
-          # Do this because some use versionName = versionCode.toString() #
+          ### Do this because some use ```versionName = versionCode.toString()``` ###
           OLD_VER_CODE=$(awk '/^\s*versionCode/ {print $NF; exit}' $BUILD_GRADLE)
           sed -E "/^\s*versionName/s/versionCode\.toString\(\)/\"${OLD_VER_CODE}\"/" -i $BUILD_GRADLE
-          #
+          ###
           sed -E '/^\s*versionCode/s/[0-9]+$/2147483647/' -i $BUILD_GRADLE
 
       - name: Change app and package name
         run: |
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
           APP_ID=$(awk -F '"' '/applicationId( |=)/ {print $2; exit}' $BUILD_GRADLE)
+          APP_NAME=$(awk -F'[<>]' '/name="app_name"/ {print $3}' app/src/main/res/values/strings.xml)
+          APP_NAME="${APP_NAME// /}"
+          NEW_APP_ID="bff.${APP_NAME,,}"
           sed -E "/applicationId( |=)/s|${APP_ID}|${NEW_APP_ID}|" -i $BUILD_GRADLE
+          echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
 
           # sed -E '/applicationId( |=)/s|com\.draco\.ladb|bff.ladb|' -i app/build.gradle
           # sed -E '/app_name/s|LADB|LADB-|' -i app/src/main/res/values/strings.xml
