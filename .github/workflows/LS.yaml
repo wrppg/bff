@@ -23,11 +23,13 @@ jobs:
           distribution: "temurin"
           cache: "gradle"
 
-      - name: bt
+      - name: List ANDROID_HOME
         run: |
           echo ${ANDROID_HOME}
           ls ${ANDROID_HOME}/*
           ls ${ANDROID_HOME}/build-tools/*
+
+      - run: yes | sdkmanager --licenses
 
       - run: |
           pwd
