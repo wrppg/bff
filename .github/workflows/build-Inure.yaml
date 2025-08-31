@@ -23,14 +23,14 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          path: 'patch'
+          path: 'bff'
 
       - name: Patch source code
         run: |
           curl -L https://github.com/ast-grep/ast-grep/releases/download/0.39.4/app-x86_64-unknown-linux-gnu.zip -o ast-grep.zip && unzip ast-grep.zip
           [[ $? -ne 0 ]] && exit 1
           chmod +x ./ast-grep ./sg
-          ./ast-grep scan --rule ./patch/patch-Inure.yaml --update-all app/src/main/java/app/simple/inure/viewmodels/launcher/LauncherViewModel.kt
+          ./ast-grep scan --rule ./bff/patch/patch-Inure.yaml --update-all app/src/main/java/app/simple/inure/viewmodels/launcher/LauncherViewModel.kt
 
       - name: Change versionCode To Max INT
         run: |
