@@ -58,13 +58,6 @@ jobs:
       - name: List APKs
         run: find app -name '*.apk'
 
-      # - name: Upload APK artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: RootActivityLauncher-APK                 # Name of the artifact
-      #     path: app/build/outputs/apk/release/*.apk     # Path to the release APK files
-      #     retention-days: 5                             # Keep the artifact for 5 days
-
       - name: Set Env
         run: |
           APK_PATH_PREFIX="app/build/outputs/apk/${FLAV:+$FLAV/}release"
