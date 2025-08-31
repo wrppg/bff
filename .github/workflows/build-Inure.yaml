@@ -23,7 +23,7 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          path: "patch"
+          path: 'patch'
 
       - name: Patch source code
         run: |
