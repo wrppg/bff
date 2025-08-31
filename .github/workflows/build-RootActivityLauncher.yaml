@@ -63,7 +63,7 @@ jobs:
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
           sed -E '/archives(Base)*Name/d' -i $BUILD_GRADLE
 
-      - name: Build with Gradle
+      - name: Build release APK
         run: |
           chmod +x ./gradlew
           ./gradlew :app:assemble${FLAV^}Release
