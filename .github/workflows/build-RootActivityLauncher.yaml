@@ -69,6 +69,8 @@ jobs:
           BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
           sed -E '/archives(Base)*Name/d' -i $BUILD_GRADLE
 
+      - run: yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
+
       - name: Build release APK
         run: |
           chmod +x ./gradlew
