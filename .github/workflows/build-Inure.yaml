@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  FLAV: ""
+  FLAV: "github"
 
 jobs:
   build:
