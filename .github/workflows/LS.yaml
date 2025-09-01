@@ -41,6 +41,5 @@ jobs:
         with:
           path: 'bff'
       - run: ls
-      - run: |
-          git clone https://github.com/wrppg/bff.git bff
-          bash bff/t.sh
+      - run: bash bff/t.sh
+          
