@@ -4,4 +4,4 @@ curl -o yq -L https://github.com/mikefarah/yq/releases/download/v4.47.1/yq_linux
 chmod +x yq bff/t.sh
 mkdir "$HOME"/bin
 echo "$HOME"/bin >> $GITHUB_PATH
-./yq
+yq --version
