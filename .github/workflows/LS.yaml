@@ -44,5 +44,5 @@ jobs:
       - run: |
           pwd
           bash -c 'pwd'
-          chmod +x bff/t.sh ./yq
+          chmod +x ./yq
           bash bff/t.sh
