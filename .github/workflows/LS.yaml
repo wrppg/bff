@@ -41,5 +41,4 @@ jobs:
         with:
           path: 'bff'
       - run: ls
-      - run: bash bff/t.sh
           
