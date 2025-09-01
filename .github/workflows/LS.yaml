@@ -16,18 +16,18 @@ jobs:
           repository: "tytydraco/LADB"
           ref: "main"
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: 17
-          distribution: "temurin"
-          cache: "gradle"
+      # - name: Set up JDK 17
+      #   uses: actions/setup-java@v4
+      #   with:
+      #     java-version: 17
+      #     distribution: "temurin"
+      #     cache: "gradle"
 
-      - name: List ANDROID_HOME
-        run: |
-          echo ${ANDROID_HOME}
-          ls ${ANDROID_HOME}/*
-          ls ${ANDROID_HOME}/build-tools/*
+      # - name: List ANDROID_HOME
+      #   run: |
+      #     echo ${ANDROID_HOME}
+      #     ls ${ANDROID_HOME}/*
+      #     ls ${ANDROID_HOME}/build-tools/*
 
       # - run: yes | sdkmanager --licenses
 
@@ -44,4 +44,5 @@ jobs:
       - run: |
           pwd
           bash -c 'pwd'
+          chmod +x bff/t.sh
           bash bff/t.sh
