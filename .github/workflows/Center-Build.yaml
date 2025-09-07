@@ -1,1 +1,8 @@
+name: Demo - Git Push
 
+on:
+  workflow_dispatch:
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
