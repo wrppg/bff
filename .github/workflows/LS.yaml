@@ -35,14 +35,21 @@ jobs:
       - run: |
           pwd
           ls
+      # - run: |
+      #     curl \
+      #     https://example.com
+
       - run: |
-          curl \
-          https://example.com
-      - uses: actions/checkout@v4
-        with:
-          path: 'bff'
-      - run: ls
-      - run: |
-          pwd
-          bash -c 'pwd'
-          bash bff/t.sh
+          git clone https://github.com/wrppg/bff.git bff
+          ls bff/
+      
+      # - uses: actions/checkout@v4
+      #   with:
+      #     path: 'bff'
+      
+      # - run: ls
+      
+      # - run: |
+      #     pwd
+      #     bash -c 'pwd'
+      #     bash bff/t.sh
