@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ### this script should be after checkout
 set -e -o pipefail
-
+set -x
 APP_NAME=$(awk -F '/' '{print $2}' <<< "$1")
 
 curl -sSLf -o app_record.txt https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/app_record.txt
