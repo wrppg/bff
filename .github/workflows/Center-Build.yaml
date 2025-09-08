@@ -30,6 +30,11 @@ jobs:
         run: |
           curl -sL https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/run.sh | bash -s -- ${{ github.event.inputs.repo }}
 
+      - name: Check env
+        run: |
+          echo "APP_NAME=$APP_NAME"
+          echo "FLAV=$FLAV"
+
       - name: Build APK
         run: |
           chmod +x ./gradlew
