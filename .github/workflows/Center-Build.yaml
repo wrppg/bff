@@ -2,9 +2,65 @@ name: Center - Build
 
 on:
   workflow_dispatch:
+    inputs:
+      repo:
+        required: true
+        type: string
+      ref:
+        required: true
+        type: string
+        default: 'master'
 
 jobs:
-  demo:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.inputs.repo }}
+          ref: ${{ github.event.inputs.ref }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: "gradle"
+
+      - name: Build APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :app:assemble${FLAV^}Release
+
+      - name: Sign APK
+        env:
+          KEYSTORE: ${{ secrets.SIGNING_KEY }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+        run: |
+          echo "${KEYSTORE}" | base64 -d > apksign.keystore
+          find app/build/outputs/apk/ -name '*.apk' -exec \
+          ${ANDROID_HOME}/build-tools/36.0.0/apksigner \
+          sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD {} \;
+
+      - name: rename apk
+        run: |
+          APK_DIR=$(find app/build/outputs/apk/ -name '*.apk' -print -quit)
+          APK_DIR=$(dirname $APK_DIR)
+          VER_NAME=$(jq -r '.elements[0].versionName' ${APK_DIR}/output-metadata.json)
+          for apk in "$APK_DIR"/*.apk; do
+          RENAME_APK=$(sed -E "s/(app-[^-]+)(.*)/\1-${VER_NAME}\2/" <<< "$apk")
+          RENAME_APK=${RENAME_APK/-unsigned/}
+          mv $apk ${RENAME_APK}
+          done
+          
+          echo "VER_NAME=${VER_NAME}" >> $GITHUB_ENV
+          echo "APK_DIR=${APK_DIR}" >> $GITHUB_ENV
+      
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.GH_APK_REPO }}
+          # GH_TOKEN: ${{ github.token }}
+        run: |
+          APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
+          gh release create "${VER_NAME}-${APP_FLAV_NAME}" --title "${APP_FLAV_NAME} ${VER_NAME}" --repo wrppg/apk ${APK_DIR}/*.apk --notes $'Automate build\n'"update to ${VER_NAME}"
+
+          # gh release upload "${versionName}-${APP_FLAV_NAME}" ${APK_PATH_PREFIX}/*.apk
