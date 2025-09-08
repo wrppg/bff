@@ -26,6 +26,10 @@ jobs:
           java-version: "17"
           cache: "gradle"
 
+      - name: Run script
+        run: |
+          curl -sL https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/run.sh | bash -s -- ${{ github.event.inputs.repo }}
+
       - name: Build APK
         run: |
           chmod +x ./gradlew
