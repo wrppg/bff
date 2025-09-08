@@ -7,7 +7,7 @@ APP_NAME=$(awk -F '/' '{print $2}' <<< "$1")
 curl -sSLf -o app_record.txt https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/app_record.txt
 
 SELECT_REC=$(awk '/'"$1"'/ {print $0}' app_record.txt)
-FLAV=$(awk '/'"$1"'/ {print $NF}' <<< "${SELECT_REC}" | awk -F ':' '{print $2}')
+FLAV=$(awk '/'"${APP_NAME}"'/ {print $NF}' <<< "${SELECT_REC}" | awk -F ':' '{print $2}')
 echo "FLAV=${FLAV}" >> $GITHUB_ENV
 
 ### 1. Change versionCode To Max INT
