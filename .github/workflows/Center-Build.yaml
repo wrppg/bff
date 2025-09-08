@@ -40,6 +40,10 @@ jobs:
           chmod +x ./gradlew
           ./gradlew :app:assemble${FLAV^}Release
 
+      - name: List apks
+        run: |
+          find app/build/outputs/apk/ -name '*.apk' -exec echo '✅' {} \;
+          
       - name: Sign APK
         env:
           KEYSTORE: ${{ secrets.SIGNING_KEY }}
