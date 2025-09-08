@@ -8,6 +8,7 @@ curl -sSLf -o app_record.txt https://raw.githubusercontent.com/wrppg/bff/refs/he
 
 SELECT_REC=$(awk '/'"$1"'/ {print $0}' app_record.txt)
 FLAV=$(awk '/'"$1"'/ {print $NF}' <<< "${SELECT_REC}" | awk -F ':' '{print $2}')
+echo "FLAV=${FLAV}" >> $GITHUB_ENV
 
 ### 1. Change versionCode To Max INT
 BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
