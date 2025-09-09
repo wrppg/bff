@@ -1,5 +1,29 @@
 #!/usr/bin/env bash
 ### this script should be after checkout
+
+### Extra setup for some apps.
+function RootActivityLauncher_Extra_Setup {
+	API_LEVEL=$((curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle.kts \
+		|| curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle) \
+		| awk '/^\s*compileSdk( |=)/ {print $NF; exit}')
+	
+	[[ "${API_LEVEL}" =~ ^[0-9]+$ ]] || { echo '❌ Invalid API_LEVEL'; exit 99; }
+
+	TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-${API_LEVEL}"
+
+	mkdir -p "$TARGET_DIR" || { echo "Failed to create directory $TARGET_DIR"; exit 99; }
+
+	## Download the modified android.jar from Reginer/aosp-android-jar
+	curl -sSLf -o "$TARGET_DIR/android.jar" "https://github.com/Reginer/aosp-android-jar/raw/refs/heads/main/android-${API_LEVEL}/android.jar"
+	[[ $? -ne 0 ]] && exit 99
+	echo "android.jar downloaded successfully."
+}
+
+function NativeAlphaForAndroid_Extra_Setup {
+	cp app/src/main/AndroidManifest.xml app/src/main/AndroidManifest_original.xml
+}
+### End of Extra function ###
+
 set -e -o pipefail
 set -x
 APP_NAME=$(awk -F '/' '{print $2}' <<< "$1")
@@ -83,26 +107,3 @@ case "$1" in
 esac
 
 ### X. Continue next workflow step...
-
-
-### Extra setup for some apps.
-function RootActivityLauncher_Extra_Setup {
-	API_LEVEL=$((curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle.kts \
-		|| curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle) \
-		| awk '/^\s*compileSdk( |=)/ {print $NF; exit}')
-	
-	[[ "${API_LEVEL}" =~ ^[0-9]+$ ]] || { echo '❌ Invalid API_LEVEL'; exit 99; }
-
-	TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-${API_LEVEL}"
-
-	mkdir -p "$TARGET_DIR" || { echo "Failed to create directory $TARGET_DIR"; exit 99; }
-
-	## Download the modified android.jar from Reginer/aosp-android-jar
-	curl -sSLf -o "$TARGET_DIR/android.jar" "https://github.com/Reginer/aosp-android-jar/raw/refs/heads/main/android-${API_LEVEL}/android.jar"
-	[[ $? -ne 0 ]] && exit 99
-	echo "android.jar downloaded successfully."
-}
-
-function NativeAlphaForAndroid_Extra_Setup {
-	cp app/src/main/AndroidManifest.xml app/src/main/AndroidManifest_original.xml
-}
