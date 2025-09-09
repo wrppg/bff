@@ -1,0 +1,27 @@
+name: Check update every 12hr
+
+on:
+  schedule:
+    - cron: "48 3,15 * * *"
+  workflow_dispatch:
+
+jobs:
+  check-update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          while read -r vercode ref repo flav; do
+            LATEST=$((curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${ref}/app/build.gradle" \
+            || curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${ref}/app/build.gradle.kts") \
+            | awk '/^\s*versionCode( |=)/ { match($0, /[0-9]+/); print substr($0, RSTART, RLENGTH); exit }')
+            
+            if [[ "$LATEST" -ne "$vercode" ]]; then
+                echo "Detect version change $repo: $vercode --> $LATEST"
+                gh workflow run Center-Build.yaml -f repo="$repo" ref="$ref"
+                continue
+            fi
+          done < app_record.txt
