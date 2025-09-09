@@ -60,9 +60,10 @@ jobs:
           APK_DIR=$(dirname $APK_DIR)
           VER_NAME=$(jq -r '.elements[0].versionName' ${APK_DIR}/output-metadata.json)
           for apk in "$APK_DIR"/*.apk; do
-          RENAME_APK=$(sed -E "s/(app-[^-]+)(.*)/\1-${VER_NAME}\2/" <<< "$apk")
-          RENAME_APK=${RENAME_APK/-unsigned/}
-          mv $apk ${RENAME_APK}
+            RENAME_APK=$(sed -E "s/(app-[^-]+)(.*)/\1-${VER_NAME}\2/" <<< "$apk")
+            RENAME_APK=${RENAME_APK/app-/${APP_NAME}-}
+            RENAME_APK=${RENAME_APK/-unsigned/}
+            mv $apk ${RENAME_APK}
           done
           
           echo "VER_NAME=${VER_NAME}" >> $GITHUB_ENV
