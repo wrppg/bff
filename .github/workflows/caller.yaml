@@ -5,4 +5,4 @@ on:
 
 jobs:
   call:
-    uses: wrppg/bff/.github/workflows/ls.yaml@main
+    uses: wrppg/bff/.github/workflows/LS.yaml@main
