@@ -26,6 +26,7 @@ function NativeAlphaForAndroid_Extra_Setup {
 function NetGuard_Extra_Setup {
 	set +x
 	echo "${KEYSTORE}" | base64 -d > keystore.jks
+ 	cp keystore.jks app/keystore.jks
 	echo "storeFile=keystore.jks" >> keystore.properties
 	echo "storePassword=${SIGNING_STORE_PASSWORD}" >> keystore.properties
 	echo "keyAlias=${SIGNING_KEY_ALIAS}" >> keystore.properties
