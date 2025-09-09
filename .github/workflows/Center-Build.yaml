@@ -91,3 +91,16 @@ jobs:
           gh release create "${VER_NAME}-${APP_FLAV_NAME}" --title "${APP_FLAV_NAME} ${VER_NAME}" --repo wrppg/apk ${APK_DIR}/*.apk --notes $'Automate build\n'"update to ${VER_NAME}"
 
           # gh release upload "${versionName}-${APP_FLAV_NAME}" ${APK_PATH_PREFIX}/*.apk
+      
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+          path: 'bff'
+
+      - run: |
+          cd bff
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-action[bot]"
+          sed -E "/${APP_NAME}/s/^[0-9]+/${VER_CODE}/" -i app_record.txt
+          git commit -m "update app_record.txt"
+          git push
