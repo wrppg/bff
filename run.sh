@@ -55,10 +55,10 @@ fi
 git clone https://github.com/wrppg/bff.git bff
 case "$1" in
 	*Inure*)
-		PATCH_FILE=$(find bff/ -iname 'patch-Inure.y*ml' -print -quit)
+		PATCH_FILE=$(find bff/ -type f -iname 'patch-Inure.y*ml' -print -quit)
 		;;
 	*Netguard*)
-		PATCH_FILE=$(find bff/ -iname 'patch-Netguard.y*ml' -print -quit)
+		PATCH_FILE=$(find bff/ -type f -iname 'patch-Netguard.y*ml' -print -quit)
 		;;
 	*) unset PATCH_FILE ;;
 esac
