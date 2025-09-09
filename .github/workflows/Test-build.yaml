@@ -10,4 +10,4 @@ jobs:
       # - uses: actions/checkout@v4
       - run: |
           gh auth login --with-token <<<"${{ github.token }}"
-          gh workflow run LS.yaml
+          gh workflow run -R wrppg/bff LS.yaml
