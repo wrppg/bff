@@ -5,9 +5,4 @@ on:
 
 jobs:
   call:
-    runs-on: ubuntu-latest
-
-    permissions: write-all
-
-    steps:
-      - uses: wrppg/bff/.github/workflows/ls.yaml@main
+    uses: wrppg/bff/.github/workflows/ls.yaml@main
