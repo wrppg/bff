@@ -9,5 +9,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          gh auth login --with-token <<<"${{ secrets.GITHUB_TOKEN }}"
+          gh auth login --with-token <<<"${{ github.token }}"
           gh workflow run LS.yaml
