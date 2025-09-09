@@ -40,6 +40,14 @@ jobs:
       #     https://example.com
 
       - run: |
+          echo ${{ github.workflow }}
+          echo ${{ github.workflow_ref }}
+          echo ${{ github.action_ref }}
+          echo ${{ github.action_repository }}
+          echo ${{ github.action_path }}
+          
+      
+      - run: |
           git clone https://github.com/wrppg/bff.git bff
           ls bff/
       
