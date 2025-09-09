@@ -40,6 +40,8 @@ jobs:
           echo "APP_NAME=$APP_NAME"
           echo "FLAV=$FLAV"
 
+      - run: yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
+
       - name: Build APK
         run: |
           chmod +x ./gradlew
