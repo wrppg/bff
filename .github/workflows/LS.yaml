@@ -1,4 +1,4 @@
-name: Debug - Something
+name: LS - Debug - Something
 
 on:
   workflow_call:
