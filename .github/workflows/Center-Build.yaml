@@ -27,6 +27,11 @@ jobs:
           cache: "gradle"
 
       - name: Run script
+        env:
+          KEYSTORE: ${{ secrets.SIGNING_KEY }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
           curl -sL https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/run.sh | bash -s -- ${{ github.event.inputs.repo }}
 
