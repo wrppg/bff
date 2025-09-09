@@ -31,4 +31,4 @@ jobs:
           echo $(date) > test-date.txt
           git add test-date.txt
           git commit -m "$(date)"
-          git push origin main
+          git push origin
