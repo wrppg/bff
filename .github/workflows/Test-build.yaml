@@ -7,23 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: 'cylonid/NativeAlphaForAndroid'
-          ref: 'dev'
-
-      - uses: actions/setup-java@v4
-        with:
-          distribution: "temurin"
-          java-version: "17"
-          cache: "gradle"
-
-      - run: |
-          cp app/src/main/AndroidManifest.xml app/src/main/AndroidManifest_original.xml
-          
-      - run: |
-          chmod +x ./gradlew
-          ./gradlew assembleExtendedRelease
-
-      - run: |
-          find app/build/outputs/apk/ -name '*.apk' -exec echo '✅' "find" {} \;
+      - env:
+          GH_TOKEN: $github.token
+        run: |
+          gh workflow run LS.yaml
