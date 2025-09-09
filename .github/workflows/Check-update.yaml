@@ -20,7 +20,7 @@ jobs:
             || curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${ref}/app/build.gradle.kts") \
             | awk '/^\s*versionCode( |=)/ { match($0, /[0-9]+/); print substr($0, RSTART, RLENGTH); exit }')
             
-            if [[ "$LATEST" -ne "$vercode" ]]; then
+            if [[ "$LATEST" -ne "$vercode" && -n $LATEST && -n $vercode ]]; then
                 echo "Detect version change $repo: $vercode --> $LATEST"
                 gh workflow run Center-Build.yaml -f repo="$repo" ref="$ref"
                 continue
