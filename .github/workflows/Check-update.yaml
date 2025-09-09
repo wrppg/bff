@@ -9,6 +9,7 @@ jobs:
   check-update:
     runs-on: ubuntu-latest
     steps:
+      
       - uses: actions/checkout@v4
 
       - env:
@@ -24,4 +25,5 @@ jobs:
                 gh workflow run Center-Build.yaml -f repo="$repo" ref="$ref"
                 continue
             fi
+            echo "✅ $repo is up to date $vercode <-> $LATEST"
           done < app_record.txt
