@@ -71,6 +71,7 @@ if [ -f app/src/main/res/xml*/shortcuts.xml ]; then
 fi
 
 echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
+echo "VER_CODE=${VER_CODE}" >> $GITHUB_ENV
 
 ### 3. patch permission name
 ## Find Permissions
