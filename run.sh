@@ -106,17 +106,19 @@ if ! [ -z "${PATCH_FILE}" ]; then
 fi
 
 ### 5. Extra setup
-case "$1" in
-	*RootActivityLauncher*)
-		RootActivityLauncher_Extra_Setup
-		;;
-	*NativeAlphaForAndroid*)
-		NativeAlphaForAndroid_Extra_Setup
-		;;
-  	*NetGuard*)
-   		NetGuard_Extra_Setup
-   		;;
-	*) echo '✅ No extra Setup for this app.' ;;
-esac
+${APP_NAME}_Extra_Setup || echo '✅ No extra Setup for this app.'
+
+# case "$1" in
+#     *RootActivityLauncher*)
+#         RootActivityLauncher_Extra_Setup
+#         ;;
+#     *NativeAlphaForAndroid*)
+#         NativeAlphaForAndroid_Extra_Setup
+#         ;;
+#     *NetGuard*)
+#         NetGuard_Extra_Setup
+#         ;;
+#     *) echo '✅ No extra Setup for this app.' ;;
+# esac
 
 ### X. Continue next workflow step...
