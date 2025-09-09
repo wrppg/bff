@@ -22,6 +22,16 @@ function RootActivityLauncher_Extra_Setup {
 function NativeAlphaForAndroid_Extra_Setup {
 	cp app/src/main/AndroidManifest.xml app/src/main/AndroidManifest_original.xml
 }
+
+function NetGuard_Extra_Setup {
+	set +x
+	echo "${KEYSTORE}" | base64 -d > keystore.jks
+	echo "storeFile=keystore.jks" >> keystore.properties
+	echo "storePassword=${SIGNING_STORE_PASSWORD}" >> keystore.properties
+	echo "keyAlias=${SIGNING_KEY_ALIAS}" >> keystore.properties
+	echo "keyPassword=${SIGNING_KEY_PASSWORD}" >> keystore.properties
+ 	set -x
+}
 ### End of Extra function ###
 
 set -e -o pipefail
@@ -103,6 +113,9 @@ case "$1" in
 	*NativeAlphaForAndroid*)
 		NativeAlphaForAndroid_Extra_Setup
 		;;
+  	*NetGuard*)
+   		NetGuard_Extra_Setup
+   		;;
 	*) echo '✅ No extra Setup for this app.' ;;
 esac
 
