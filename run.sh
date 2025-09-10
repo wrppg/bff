@@ -3,11 +3,14 @@
 
 ### Extra setup for some apps.
 function RootActivityLauncher_Extra_Setup {
-	API_LEVEL=$((curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle.kts \
-		|| curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle) \
-		| awk '/^\s*compileSdk( |=)/ {print $NF; exit}')
+	# API_LEVEL=$((curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle.kts \
+	# 	|| curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle) \
+	# 	| awk '/^\s*compileSdk( |=)/ {print $NF; exit}')
 	
-	[[ "${API_LEVEL}" =~ ^[0-9]+$ ]] || { echo '❌ Invalid API_LEVEL'; exit 99; }
+ 	API_LEVEL=$(awk '/^\s*compileSdk( |=)/ {print $NF; exit}' \
+  	$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit))
+	
+ 	[[ "${API_LEVEL}" =~ ^[0-9]+$ ]] || { echo '❌ Invalid API_LEVEL'; exit 99; }
 
 	TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-${API_LEVEL}"
 
