@@ -106,5 +106,6 @@ jobs:
           column -t app_record.txt > app_record.txt.tmp
           mv app_record.txt.tmp app_record.txt
           git add app_record.txt
-          git commit -m "update app_record.txt"
+          # git commit -m "update app_record.txt"
+          git commit -m "app_record.txt ${APP_NAME} to ${VER_CODE}"
           git push
