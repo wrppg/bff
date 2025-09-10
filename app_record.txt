@@ -3,4 +3,4 @@
 74          master  SmartPack/PackageManager       flav:pro
 33          master  zacharee/RootActivityLauncher  flav:
 50          main    tytydraco/LADB                 flav:
-1521        dev     cylonid/NativeAlphaForAndroid  flav:extended
+1520        dev     cylonid/NativeAlphaForAndroid  flav:extended
