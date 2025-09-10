@@ -33,7 +33,7 @@ jobs:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
-          curl -sL https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/run.sh | bash -s -- ${{ github.event.inputs.repo }}
+          curl -sfL https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/run.sh | bash -s -- ${{ github.event.inputs.repo }}
 
       - name: Check env
         run: |
