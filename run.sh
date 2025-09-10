@@ -75,7 +75,8 @@ echo "VER_CODE=${VER_CODE}" >> $GITHUB_ENV
 
 ### 3. patch permission name
 ## Find Permissions
-PERM=$(find app -type f -name 'AndroidManifest.xml' -exec yq -p=xml -o=json {} \; | jq -r '.manifest.permission | (if type=="array" then . else [.] end)[]["+@android:name"] | select(length > 0)' | sort -u)
+PERM=$(find app -type f -name 'AndroidManifest.xml' -exec yq --xml-attribute-prefix "+@" -p=xml -o=json {} \; \
+| jq -r '.manifest.permission | (if type=="array" then . else [.] end)[]["+@android:name"] | select(length > 0)' | sort -u)
 
 ## Build permsission pettern
 PERM_EXPR=$(tr '\n' '|' <<< "${PERM}" | sed -E 's,\|$,,')
