@@ -25,5 +25,5 @@ jobs:
                 gh workflow run Center-Build.yaml -f repo="$repo" -f ref="$ref"
                 continue
             fi
-            echo "✅ $repo is up to date $vercode <-> $LATEST"
+            echo "✅ $repo is up to date already. $vercode <-> $LATEST"
           done < app_record.txt
