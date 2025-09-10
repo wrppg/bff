@@ -46,21 +46,21 @@ jobs:
           echo ${{ github.action_ref }}
           echo ${{ github.action_repository }}
           echo ${{ github.action_path }}
-          
+
       - run: |
           sudo apt install -y moreutils
           sponge --help
-      
+
       - run: |
           git clone https://github.com/wrppg/bff.git bff
           ls bff/
-      
+
       # - uses: actions/checkout@v4
       #   with:
       #     path: 'bff'
-      
+
       # - run: ls
-      
+
       # - run: |
       #     pwd
       #     bash -c 'pwd'
