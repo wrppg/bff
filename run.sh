@@ -1,43 +1,5 @@
 #!/usr/bin/env bash
 ### this script should be after checkout
-
-### Extra setup for some apps.
-function RootActivityLauncher_Extra_Setup {
-	# API_LEVEL=$((curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle.kts \
-	# 	|| curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle) \
-	# 	| awk '/^\s*compileSdk( |=)/ {print $NF; exit}')
-	
- 	API_LEVEL=$(awk '/^\s*compileSdk( |=)/ {print $NF; exit}' \
-  	$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit))
-	
- 	[[ "${API_LEVEL}" =~ ^[0-9]+$ ]] || { echo '❌ Invalid API_LEVEL'; exit 99; }
-
-	TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-${API_LEVEL}"
-
-	mkdir -p "$TARGET_DIR" || { echo "Failed to create directory $TARGET_DIR"; exit 99; }
-
-	## Download the modified android.jar from Reginer/aosp-android-jar
-	curl -sSLf -o "$TARGET_DIR/android.jar" "https://github.com/Reginer/aosp-android-jar/raw/refs/heads/main/android-${API_LEVEL}/android.jar"
-	[[ $? -ne 0 ]] && exit 99
-	echo "android.jar downloaded successfully."
-}
-
-function NativeAlphaForAndroid_Extra_Setup {
-	cp app/src/main/AndroidManifest.xml app/src/main/AndroidManifest_original.xml
-}
-
-function NetGuard_Extra_Setup {
-	set +x
-	echo "${KEYSTORE}" | base64 -d > keystore.jks
- 	cp keystore.jks app/keystore.jks
-	echo "storeFile=keystore.jks" >> keystore.properties
-	echo "storePassword=${SIGNING_STORE_PASSWORD}" >> keystore.properties
-	echo "keyAlias=${SIGNING_KEY_ALIAS}" >> keystore.properties
-	echo "keyPassword=${SIGNING_KEY_PASSWORD}" >> keystore.properties
- 	set -x
-}
-### End of Extra function ###
-
 set -e -o pipefail
 set -x
 APP_NAME=$(awk -F '/' '{print $2}' <<< "$1")
@@ -112,6 +74,42 @@ if ! [ -z "${PATCH_FILE}" ]; then
 fi
 
 ### 5. Extra setup
+function RootActivityLauncher_Extra_Setup {
+	# API_LEVEL=$((curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle.kts \
+	# 	|| curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle) \
+	# 	| awk '/^\s*compileSdk( |=)/ {print $NF; exit}')
+	
+ 	API_LEVEL=$(awk '/^\s*compileSdk( |=)/ {print $NF; exit}' \
+  	$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit))
+	
+ 	[[ "${API_LEVEL}" =~ ^[0-9]+$ ]] || { echo '❌ Invalid API_LEVEL'; exit 99; }
+
+	TARGET_DIR="$ANDROID_SDK_ROOT/platforms/android-${API_LEVEL}"
+
+	mkdir -p "$TARGET_DIR" || { echo "Failed to create directory $TARGET_DIR"; exit 99; }
+
+	## Download the modified android.jar from Reginer/aosp-android-jar
+	curl -sSLf -o "$TARGET_DIR/android.jar" "https://github.com/Reginer/aosp-android-jar/raw/refs/heads/main/android-${API_LEVEL}/android.jar"
+	[[ $? -ne 0 ]] && exit 99
+	echo "android.jar downloaded successfully."
+}
+
+function NativeAlphaForAndroid_Extra_Setup {
+	cp app/src/main/AndroidManifest.xml app/src/main/AndroidManifest_original.xml
+}
+
+function NetGuard_Extra_Setup {
+	set +x
+	echo "${KEYSTORE}" | base64 -d > keystore.jks
+ 	cp keystore.jks app/keystore.jks
+	echo "storeFile=keystore.jks" >> keystore.properties
+	echo "storePassword=${SIGNING_STORE_PASSWORD}" >> keystore.properties
+	echo "keyAlias=${SIGNING_KEY_ALIAS}" >> keystore.properties
+	echo "keyPassword=${SIGNING_KEY_PASSWORD}" >> keystore.properties
+ 	set -x
+}
+
+## Run extra setup
 ${APP_NAME}_Extra_Setup || echo '✅ No extra Setup for this app.'
 
 # case "$1" in
