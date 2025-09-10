@@ -102,6 +102,8 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-action[bot]"
           sed -E "/${APP_NAME}/s/^[0-9]+/${VER_CODE}/" -i app_record.txt
+          column -t app_record.txt > app_record.txt.tmp
+          mv app_record.txt.tmp app_record.txt
           git add app_record.txt
           git commit -m "update app_record.txt"
           git push
