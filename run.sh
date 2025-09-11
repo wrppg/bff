@@ -56,15 +56,16 @@ fi
 
 ### 4. patch source
 git clone https://github.com/wrppg/bff.git bff
-case "$1" in
-	*Inure*)
-		PATCH_FILE=$(find bff/ -type f -iname 'patch-Inure.y*ml' -print -quit)
-		;;
-	*Netguard*)
-		PATCH_FILE=$(find bff/ -type f -iname 'patch-Netguard.y*ml' -print -quit)
-		;;
-	*) unset PATCH_FILE ;;
-esac
+PATCH_FILE=$(find bff/ -type f -iname "patch-${APP_NAME}.y*ml" -print -quit)
+# case "$1" in
+# 	*Inure*)
+# 		PATCH_FILE=$(find bff/ -type f -iname 'patch-Inure.y*ml' -print -quit)
+# 		;;
+# 	*Netguard*)
+# 		PATCH_FILE=$(find bff/ -type f -iname 'patch-Netguard.y*ml' -print -quit)
+# 		;;
+# 	*) unset PATCH_FILE ;;
+# esac
 
 if ! [ -z "${PATCH_FILE}" ]; then
 	curl -Lf https://github.com/ast-grep/ast-grep/releases/download/0.39.4/app-x86_64-unknown-linux-gnu.zip -o ast-grep.zip
