@@ -49,6 +49,7 @@ PERM_EXPR=$(sed -E -e '/^[[:space:]]+$/d' -e '/^$/d' -e '/\$\{.*\}/d' <<< "${PER
 
 ## Patch permission / uses-permission in XML
 if ! [ -z "${PERM_EXPR}" ]; then
+	# find app/ -type f -name '*.xml' -exec sed -E "s/${PERM_EXPR}/${NEW_APP_ID}/g" -i {} +
 	find app/ -type f -name '*.xml' -exec sed -E "s/(${PERM_EXPR})/_\1/g" -i {} +
 fi
 
