@@ -1,6 +1,6 @@
 2024122801  master  M66B/NetGuard                  flav:
 10633       master  Hamza417/Inure                 flav:github
-74          master  SmartPack/PackageManager       flav:pro
+75          master  SmartPack/PackageManager       flav:pro
 33          master  zacharee/RootActivityLauncher  flav:
 54          main    tytydraco/LADB                 flav:
 1520        dev     cylonid/NativeAlphaForAndroid  flav:extended
