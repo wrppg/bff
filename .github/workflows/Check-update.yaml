@@ -22,7 +22,7 @@ jobs:
             
             if [[ "$LATEST" -ne "$vercode" && -n $LATEST && -n $vercode ]]; then
                 echo "✨ Detect version change $repo: $vercode --> $LATEST"
-                gh workflow run Center-Build.yaml -f repo="$repo" -f ref="$ref"
+                gh workflow run Main-Build.yaml -f repo="$repo" -f ref="$ref"
                 continue
             fi
             echo "✅ $repo is up to date already. $vercode <-> $LATEST"
