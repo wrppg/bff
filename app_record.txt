@@ -1,4 +1,4 @@
-2025100401  master  M66B/NetGuard                  flav:
+2025101201  master  M66B/NetGuard                  flav:
 10700       master  Hamza417/Inure                 flav:github
 75          master  SmartPack/PackageManager       flav:pro
 33          master  zacharee/RootActivityLauncher  flav:
