@@ -1,5 +1,5 @@
 2025101201  master  M66B/NetGuard                  flav:
-10640       master  Hamza417/Inure                 flav:github
+10641       master  Hamza417/Inure                 flav:github
 75          master  SmartPack/PackageManager       flav:pro
 33          master  zacharee/RootActivityLauncher  flav:
 54          main    tytydraco/LADB                 flav:
