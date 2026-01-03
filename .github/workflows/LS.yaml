@@ -61,6 +61,10 @@ jobs:
           ref: "main"
           path: aaa
           token: ${{ secrets.GH_AAA_REPO }}
+      - run: |
+          cd aaa
+          ls .
+      - uses: actions/checkout@v4
           
 
       # - uses: actions/checkout@v4
