@@ -75,7 +75,7 @@ jobs:
           # git commit -m "update time.txt"
           git commit -m "time"
           git push
-          cd
+          cd -
           pwd
           ls
 
