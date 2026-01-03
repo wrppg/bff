@@ -75,9 +75,16 @@ jobs:
           # git commit -m "update time.txt"
           git commit -m "time"
           git push
+          cd
+          pwd
+          ls
 
           
       - uses: actions/checkout@v4
+      - run: |
+          cd
+          pwd
+          ls
           
 
       # - uses: actions/checkout@v4
