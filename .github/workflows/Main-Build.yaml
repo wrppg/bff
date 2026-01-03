@@ -82,6 +82,26 @@ jobs:
           echo "VER_NAME=${VER_NAME}" >> $GITHUB_ENV
           echo "APK_DIR=${APK_DIR}" >> $GITHUB_ENV
 
+################################
+      - name: Commit APK Repo
+        uses: actions/checkout@v4
+        with:
+          repository: "wrppg/apk"
+          token: ${{ secrets.GH_APK_REPO }}
+          path: "apk-repo"
+
+      - run: |
+          cd apk-repo
+          pwd
+          ls
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-action[bot]"
+          git pull
+          APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
+          echo "${APP_FLAV_NAME} ${VER_NAME} update to ${VER_NAME}" > update.txt
+          cd -
+          pwd
+################################
       - name: Release
         env:
           GH_TOKEN: ${{ secrets.GH_APK_REPO }}
