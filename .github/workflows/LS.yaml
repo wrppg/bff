@@ -59,8 +59,7 @@ jobs:
         with:
           repository: "wrppg/aaa"
           path: aaa
-        env:
-          GH_TOKEN: ${{ secrets.GH_AAA_REPO }}
+          token: ${{ secrets.GH_AAA_REPO }}
           
 
       # - uses: actions/checkout@v4
