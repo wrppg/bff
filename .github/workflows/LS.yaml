@@ -55,6 +55,12 @@ jobs:
           git clone https://github.com/wrppg/bff.git bff
           ls bff/
 
+      - uses: actions/checkout@v4
+        with:
+          repository: "wrppg/aaa"
+          path: aaa
+          
+
       # - uses: actions/checkout@v4
       #   with:
       #     path: 'bff'
