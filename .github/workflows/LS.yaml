@@ -58,6 +58,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: "wrppg/aaa"
+          ref: "main"
           path: aaa
           token: ${{ secrets.GH_AAA_REPO }}
           
