@@ -4,3 +4,4 @@
 33          master  zacharee/RootActivityLauncher  flav:
 54          main    tytydraco/LADB                 flav:
 1520        dev     cylonid/NativeAlphaForAndroid  flav:extended
+27          master  yogeshpaliyal/Deepr            flav:pro
