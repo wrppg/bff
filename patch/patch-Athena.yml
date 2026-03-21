@@ -1,0 +1,11 @@
+id: patch premiumUnlocked at app/src/main/java/com/kin/athena/domain/model/Settings.kt
+language: Kotlin
+rule:
+  kind: boolean_literal
+  inside:
+    kind: class_parameter
+    stopBy: end
+    has:
+      kind: simple_identifier
+      pattern: premiumUnlocked
+fix: 'true'
