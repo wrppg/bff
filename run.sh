@@ -111,6 +111,10 @@ function NetGuard_Extra_Setup {
  	set -x
 }
 
+function Athena_Extra_Setup {
+	apt install golang-go
+}
+
 ## Run extra setup
 ${APP_NAME}_Extra_Setup || echo '✅ No extra Setup for this app.'
 
