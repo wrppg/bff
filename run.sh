@@ -11,6 +11,7 @@ FLAV=$(awk '{print $NF}' <<< "${SELECT_REC}" | awk -F ':' '{print $2}')
 echo "FLAV=${FLAV}" >> $GITHUB_ENV
 
 ### 1. Change versionCode To Max INT
+
 BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
 [ -z "${BUILD_GRADLE}" ] && "❌ No BUILD_GRADLE." && exit 99
 
@@ -21,6 +22,7 @@ sed -E "/^\s*versionName/s/versionCode\.toString\(\)/\"${VER_CODE}\"/" -i $BUILD
 sed -E '/^\s*versionCode( |=)/s/[0-9]+$/2147483647/' -i $BUILD_GRADLE
 
 ### 2. patch package name
+
 OLD_APP_ID=$(awk -F '"' '/applicationId( |=)/ {print $2; exit}' $BUILD_GRADLE)
 APP_NAME="${APP_NAME// /}"
 NEW_APP_ID="bff.${APP_NAME,,}"
@@ -39,6 +41,7 @@ echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
 echo "VER_CODE=${VER_CODE}" >> $GITHUB_ENV
 
 ### 3. patch permission name
+
 ## Find Permissions
 PERM=$(find app -type f -name 'AndroidManifest.xml' -exec yq --xml-attribute-prefix "+@" -p=xml -o=json {} \; \
 | jq -r '.manifest.permission | (if type=="array" then . else [.] end)[]["+@android:name"] | select(length > 0)' | sort -u)
@@ -55,8 +58,10 @@ fi
 
 
 ### 4. patch source
+
 git clone https://github.com/wrppg/bff.git bff
 PATCH_FILE=$(find bff/ -type f -iname "patch-${APP_NAME}.y*ml" -print -quit)
+
 # case "$1" in
 # 	*Inure*)
 # 		PATCH_FILE=$(find bff/ -type f -iname 'patch-Inure.y*ml' -print -quit)
@@ -76,6 +81,7 @@ if ! [ -z "${PATCH_FILE}" ]; then
 fi
 
 ### 5. Extra setup
+
 function RootActivityLauncher_Extra_Setup {
 	# API_LEVEL=$((curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle.kts \
 	# 	|| curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle) \
