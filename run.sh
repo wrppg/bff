@@ -112,7 +112,7 @@ function NetGuard_Extra_Setup {
 }
 
 function Athena_Extra_Setup {
-	apt install -y golang-go
+	sudo apt install -y golang-go
 }
 
 ## Run extra setup
