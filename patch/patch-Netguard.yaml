@@ -1,21 +1,11 @@
-id: patch IAB.java
+id: patch app/src/main/java/eu/faircode/netguard/IAB.java
 language: Java
 rule:
-  any:
-    - kind: block
-      inside:
-        pattern: public boolean isPurchased($$$) throws $$$ {$BODY}
-        stopBy:
-          kind: method_declaration
-    - kind: block
-      inside:
-        pattern: public boolean isPurchased($$$) {$$$}
-        stopBy:
-          kind: method_declaration
-    - kind: block
-      inside:
-        pattern: public boolean isPurchasedAny($$$) {$$$}
-        stopBy:
-          kind: method_declaration
+  kind: block
+  inside:
+    kind: method_declaration
+    has:
+      kind: identifier
+      regex: isPurchased(any)?
 fix: |-
   { return true; }
