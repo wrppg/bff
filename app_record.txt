@@ -6,4 +6,3 @@
 1520        dev     cylonid/NativeAlphaForAndroid  flav:extended
 27          master  yogeshpaliyal/Deepr            flav:pro
 306         main    Kin69/Athena                   flav:fdroid
-code        master  LinkSheet/LinkSheet            flav:pro
