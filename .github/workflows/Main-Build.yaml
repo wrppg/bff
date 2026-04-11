@@ -100,21 +100,48 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-action[bot]"
           git pull
-          APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
+          # APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
+          APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}" >> $GITHUB_ENV
           echo "${APP_FLAV_NAME} ${VER_NAME} update to ${VER_NAME}" > update.txt
           git add update.txt
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update" && git push)
           # git commit -m "update" && git push
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "update"
+            git push
+          fi
+          
+          # git diff --quiet && git diff --staged --quiet || (git commit -m "Update" && git push)
+          
           cd -
           pwd
 ################################
-      - name: Release
+
+      - name: build tag_name
+        run: |
+          # APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
+          tag_name="${VER_NAME}-${APP_FLAV_NAME}"
+
+          echo "tag_name=${tag_name}" >> $GITHUB_ENV
+
+      - name: Chech dup tag_name
+        id: check-dup
         env:
           GH_TOKEN: ${{ secrets.GH_APK_REPO }}
-          # GH_TOKEN: ${{ github.token }}
         run: |
-          APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
-          gh release create "${VER_NAME}-${APP_FLAV_NAME}" --title "${APP_FLAV_NAME} ${VER_NAME}" --repo wrppg/apk ${APK_DIR}/*.apk --notes $'Automate build\n'"update to ${VER_NAME}"
+          gh release view -R wrppg/apk "${tag_name}" && echo "skip=true" >> $GITHUB_OUTPUT || true
+          
+      - name: Release
+        if: steps.check-dup.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GH_APK_REPO }}
+        run: |
+          # APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
+          # gh release create "${VER_NAME}-${APP_FLAV_NAME}" --title "${APP_FLAV_NAME} ${VER_NAME}" --repo wrppg/apk ${APK_DIR}/*.apk --notes $'Automate build\n'"update to ${VER_NAME}"
+
+          gh release create "${tag_name}" --title "${APP_FLAV_NAME} ${VER_NAME}" --repo wrppg/apk ${APK_DIR}/*.apk --notes $'Automate build\n'"update to ${VER_NAME}"
 
           # gh release upload "${versionName}-${APP_FLAV_NAME}" ${APK_PATH_PREFIX}/*.apk
 
