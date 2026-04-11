@@ -15,6 +15,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: ${{ github.event.inputs.repo }} - ${{ github.event.inputs.ref }}
+        run: echo
+      
       - uses: actions/checkout@v6
         with:
           repository: ${{ github.event.inputs.repo }}
