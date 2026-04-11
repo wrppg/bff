@@ -103,8 +103,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-action[bot]"
           git pull
-          # APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
-          APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}" >> $GITHUB_ENV
+          APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
           echo "${APP_FLAV_NAME} ${VER_NAME} update to ${VER_NAME}" > update.txt
           git add update.txt
           # git commit -m "update" && git push
@@ -124,7 +123,7 @@ jobs:
 
       - name: build tag_name
         run: |
-          # APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
+          APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
           tag_name="${VER_NAME}-${APP_FLAV_NAME}"
           
           echo "${tag_name}"
