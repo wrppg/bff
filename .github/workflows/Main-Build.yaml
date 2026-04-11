@@ -10,13 +10,16 @@ on:
         required: true
         type: string
         default: "master"
+      vercode:
+        required: false
+        type: string
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: ${{ github.event.inputs.repo }} - ${{ github.event.inputs.ref }}
-        run: echo
+      - name: ${{ github.event.inputs.repo }} - ${{ github.event.inputs.vercode }}
+        run: echo ${{ github.event.inputs.repo }}
       
       - uses: actions/checkout@v6
         with:
