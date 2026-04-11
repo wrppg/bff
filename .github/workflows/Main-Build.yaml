@@ -100,8 +100,8 @@ jobs:
           APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
           echo "${APP_FLAV_NAME} ${VER_NAME} update to ${VER_NAME}" > update.txt
           git add update.txt
-          git commit -m "update"
-          git push
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update" && git push)
+          # git commit -m "update" && git push
           cd -
           pwd
 ################################
