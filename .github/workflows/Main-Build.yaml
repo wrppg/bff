@@ -126,7 +126,8 @@ jobs:
         run: |
           # APP_FLAV_NAME="${APP_NAME}${FLAV:+"-$FLAV"}"
           tag_name="${VER_NAME}-${APP_FLAV_NAME}"
-
+          
+          echo "${tag_name}"
           echo "tag_name=${tag_name}" >> $GITHUB_ENV
 
       - name: Chech dup tag_name
