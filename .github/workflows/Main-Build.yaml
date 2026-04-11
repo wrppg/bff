@@ -15,7 +15,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           repository: ${{ github.event.inputs.repo }}
           ref: ${{ github.event.inputs.ref }}
@@ -84,7 +84,7 @@ jobs:
 
 ################################
       - name: Commit APK Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: "wrppg/apk"
           token: ${{ secrets.GH_APK_REPO }}
@@ -115,7 +115,7 @@ jobs:
 
           # gh release upload "${versionName}-${APP_FLAV_NAME}" ${APK_PATH_PREFIX}/*.apk
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           token: ${{ github.token }}
           path: "bff"
