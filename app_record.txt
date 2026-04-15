@@ -6,4 +6,4 @@
 1520        dev     cylonid/NativeAlphaForAndroid  flav:extended  17
 28          master  yogeshpaliyal/Deepr            flav:pro       17
 306         main    Kin69/Athena                   flav:fdroid    17
-0           main    doubleangels/nextdnsmanager    flav:foss      21
+//0           main    doubleangels/nextdnsmanager    flav:foss      21
