@@ -1,9 +1,9 @@
-2025101201  master  M66B/NetGuard                  flav:
-10700       master  Hamza417/Inure                 flav:github
-77          master  SmartPack/PackageManager       flav:pro
-33          master  zacharee/RootActivityLauncher  flav:
-54          main    tytydraco/LADB                 flav:
-1520        dev     cylonid/NativeAlphaForAndroid  flav:extended
-28          master  yogeshpaliyal/Deepr            flav:pro
-306         main    Kin69/Athena                   flav:fdroid
-0           main    doubleangels/nextdnsmanager    flav:foss
+2025101201  master  M66B/NetGuard                  flav:          17
+10700       master  Hamza417/Inure                 flav:github    17
+77          master  SmartPack/PackageManager       flav:pro       17
+33          master  zacharee/RootActivityLauncher  flav:          17
+54          main    tytydraco/LADB                 flav:          17
+1520        dev     cylonid/NativeAlphaForAndroid  flav:extended  17
+28          master  yogeshpaliyal/Deepr            flav:pro       17
+306         main    Kin69/Athena                   flav:fdroid    17
+0           main    doubleangels/nextdnsmanager    flav:foss      21
