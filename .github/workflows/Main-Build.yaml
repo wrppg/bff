@@ -13,6 +13,10 @@ on:
       vercode:
         required: false
         type: string
+      java:
+        required: false
+        type: string
+        default: "17"
 
 jobs:
   build:
@@ -29,7 +33,8 @@ jobs:
       - uses: actions/setup-java@v5
         with:
           distribution: "temurin"
-          java-version: "17"
+          # java-version: "17"
+          java-version: ${{ github.event.inputs.java || '17' }}
           cache: "gradle"
 
       - name: Run script
