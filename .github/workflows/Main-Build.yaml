@@ -25,7 +25,8 @@ jobs:
       - name: ${{ github.event.inputs.repo }} - ${{ github.event.inputs.vercode }}
         run: echo ${{ github.event.inputs.repo }}
 
-      - id: find-default-branch
+      - name: find default branch
+        id: find-default-branch
         if: github.event.inputs.ref == 'default'
         env:
           GH_TOKEN: ${{ github.token }}
