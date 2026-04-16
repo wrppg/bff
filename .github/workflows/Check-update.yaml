@@ -18,6 +18,10 @@ jobs:
           while read -r vercode ref repo _ java _; do
             echo $vercode | grep -iE -v -q '^[0-9]' && continue
 
+            if [[ "$ref" == "default" ]]; then
+              ref=$(gh repo view $repo --json defaultBranchRef --jq '.defaultBranchRef.name')
+            fi
+
             LATEST=$((curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${ref}/app/build.gradle" \
             || curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${ref}/app/build.gradle.kts") \
             | awk '/^\s*versionCode( |=)/ { match($0, /[0-9]+/); print substr($0, RSTART, RLENGTH); exit }')
