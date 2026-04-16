@@ -9,7 +9,7 @@ on:
       ref:
         required: true
         type: string
-        default: "master"
+        default: "default"
       vercode:
         required: false
         type: string
@@ -24,11 +24,21 @@ jobs:
     steps:
       - name: ${{ github.event.inputs.repo }} - ${{ github.event.inputs.vercode }}
         run: echo ${{ github.event.inputs.repo }}
+
+      - id: find-default-branch
+        if: github.event.inputs.ref == 'default'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH_REF=$(gh repo view ${{ github.event.inputs.repo }} --json defaultBranchRef --jq '.defaultBranchRef.name')
+          # ref=$(gh api https://api.github.com/repos/${{ github.event.inputs.repo }} --jq '.default_branch')
+
+          echo "branch_ref=$BRANCH_REF" >> $GITHUB_OUTPUT
       
       - uses: actions/checkout@v6
         with:
           repository: ${{ github.event.inputs.repo }}
-          ref: ${{ github.event.inputs.ref }}
+          ref: ${{ steps.find-default-branch.outputs.branch_ref  || github.event.inputs.ref }}
 
       - uses: actions/setup-java@v5
         with:
