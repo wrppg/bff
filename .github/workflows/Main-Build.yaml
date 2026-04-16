@@ -85,7 +85,14 @@ jobs:
       - name: Inverse Colour Launcher Icon
         if: env.IV_IC_COLOR == 'yes'
         run: |
-          find app/src -iname 'ic_launcher*.png' -exec magick mogrify -channel RGB -negate {} \+
+          ic_launcher_name=$(find app -type f -name 'AndroidManifest.xml' \
+          -exec yq -r --xml-attribute-prefix "+@" -p=xml -o=json '.manifest.application."+@android:icon"' {} \; | \
+          cut -f2 -d "/")
+          
+          find app/src \( -iname "${ic_launcher_name}*.png" -o -iname "${ic_launcher_name}*.webp" \) \
+          -exec magick mogrify -channel RGB -negate {} \+
+          
+          # find app/src -iname 'ic_launcher*.png' -exec magick mogrify -channel RGB -negate {} \+
 
       - run: yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
 
