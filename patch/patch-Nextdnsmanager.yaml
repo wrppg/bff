@@ -1,0 +1,14 @@
+language: Scala
+rule:
+  kind: boolean_literal
+  inside:
+    kind: assignment_expression
+    # stopBy: end
+    inside:
+      kind: block
+      inside:
+        kind: call_expression
+        has:
+          kind: identifier
+          pattern: sentry
+fix: 'true'
