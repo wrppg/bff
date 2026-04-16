@@ -1,3 +1,4 @@
+id: disable sentry at app/build.gradle
 language: Scala
 rule:
   kind: boolean_literal
