@@ -84,8 +84,8 @@ if ! [ -z "${PATCH_FILE}" ]; then
 	unzip ast-grep.zip
 	chmod +x ./ast-grep ./sg
 		
-	./ast-grep scan --rule "${PATCH_FILE}" --update-all app --config "${SG_CONF_FILE}" || \
-	./ast-grep scan --rule "${PATCH_FILE}" --update-all app
+	./ast-grep scan --rule "${PATCH_FILE}" --update-all app/ --config "${SG_CONF_FILE}" || \
+	./ast-grep scan --rule "${PATCH_FILE}" --update-all app/
 fi
 
 ### 5. Extra setup
