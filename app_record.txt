@@ -6,4 +6,4 @@
 1520        dev     cylonid/NativeAlphaForAndroid  flav:extended  17  iv_ic_clr:
 28          master  yogeshpaliyal/Deepr            flav:pro       17  iv_ic_clr:
 306         main    Kin69/Athena                   flav:fdroid    17  iv_ic_clr:
-0           main    doubleangels/nextdnsmanager    flav:foss      21  iv_ic_clr:yes
+0           main    doubleangels/Nextdnsmanager    flav:foss      21  iv_ic_clr:yes
