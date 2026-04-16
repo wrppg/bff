@@ -3,7 +3,7 @@
 set -e -o pipefail
 set -x
 APP_NAME=$(awk -F '/' '{print $2}' <<< "$1")
-# APP_NAME="${APP_NAME^}"
+APP_NAME="${APP_NAME^}"
 
 curl -sSLf -o app_record.txt https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/app_record.txt
 
@@ -130,7 +130,7 @@ function NetGuard_Extra_Setup {
 # }
 
 ## Run extra setup
-${APP_NAME}_Extra_Setup || echo '✅ No extra Setup for this app.'
+${APP_NAME}_Extra_Setup || echo "✅ No extra Setup for ${APP_NAME}."
 
 # case "$1" in
 #     *RootActivityLauncher*)
