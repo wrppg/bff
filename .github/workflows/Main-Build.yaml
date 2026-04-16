@@ -50,7 +50,7 @@ jobs:
         run: |
           echo "APP_NAME=$APP_NAME"
           echo "FLAV=$FLAV"
-          echo "FLAV=$IV_IC_COLOR"
+          echo "IV_IC_COLOR=$IV_IC_COLOR"
 
       - id: cache-magick
         if: env.IV_IC_COLOR == 'yes'
