@@ -15,7 +15,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          while read -r vercode ref repo _ java; do
+          while read -r vercode ref repo _ java _; do
             echo $vercode | grep -iE -v -q '^[0-9]' && continue
 
             LATEST=$((curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${ref}/app/build.gradle" \
