@@ -3,10 +3,11 @@
 set -e -o pipefail
 set -x
 APP_NAME=$(awk -F '/' '{print $2}' <<< "$1")
+# APP_NAME="${APP_NAME^}"
 
 curl -sSLf -o app_record.txt https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/app_record.txt
 
-SELECT_REC=$(awk '/'"${APP_NAME}"'/ {print $0}' app_record.txt)
+SELECT_REC=$(awk -v IGNORECASE=1 '/'"${APP_NAME}"'/ {print $0}' app_record.txt)
 # FLAV=$(awk '{print $NF}' <<< "${SELECT_REC}" | awk -F ':' '{print $2}')
 FLAV=$(awk '{print $4}' <<< "${SELECT_REC}" | awk -F ':' '{print $2}')
 echo "FLAV=${FLAV}" >> $GITHUB_ENV
@@ -65,6 +66,7 @@ fi
 
 git clone https://github.com/wrppg/bff.git bff
 PATCH_FILE=$(find bff/ -type f -iname "patch-${APP_NAME}.y*ml" -print -quit)
+SG_CONF_FILE=$(find bff/ -type f -iname "sg-conf-${APP_NAME}.y*ml" -print -quit)
 
 # case "$1" in
 # 	*Inure*)
@@ -81,6 +83,8 @@ if ! [ -z "${PATCH_FILE}" ]; then
 	[ $? -ne 0 ] && echo "❌ Error when downloading ast-grep." && exit 99
 	unzip ast-grep.zip
 	chmod +x ./ast-grep ./sg
+		
+	./ast-grep scan --rule "${PATCH_FILE}" --update-all app --config "${SG_CONF_FILE}" || \
 	./ast-grep scan --rule "${PATCH_FILE}" --update-all app
 fi
 
