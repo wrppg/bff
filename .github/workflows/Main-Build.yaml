@@ -50,6 +50,31 @@ jobs:
         run: |
           echo "APP_NAME=$APP_NAME"
           echo "FLAV=$FLAV"
+          echo "FLAV=$IV_IC_COLOR"
+
+      - id: cache-magick
+        if: env.IV_IC_COLOR == 'yes'
+        uses: actions/cache@v5
+        with:
+          path: ~/bin/magick
+          key: ${{ runner.os }}-bin-magick-7.1.2-19
+          restore-keys: |
+            ${{ runner.os }}-bin-
+
+      - name: Install magick
+        if: steps.cache-magick.outputs.cache-hit != 'true' && env.IV_IC_COLOR == 'yes'
+        run: |
+          mkdir -p ~/bin
+          curl -L https://download.imagemagick.org/archive/binaries/magick --output-dir ~/bin -o magick
+          chmod +x ~/bin/*
+
+      - name: Add bin to PATH
+        run: echo "$HOME/bin" >> $GITHUB_PATH
+
+      - name: Inverse Colour Launcher Icon
+        if: env.IV_IC_COLOR == 'yes'
+        run: |
+          find app/src -iname 'ic_launcher*.png' -exec magick mogrify -channel RGB -negate {} \+
 
       - run: yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
 
