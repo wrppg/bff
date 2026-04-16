@@ -1,5 +1,5 @@
 2025101201  master  M66B/NetGuard                  flav:          17  iv_ic_clr:
-10700       master  Hamza417/Inure                 flav:github    17  iv_ic_clr:
+10701       master  Hamza417/Inure                 flav:github    17  iv_ic_clr:
 77          master  SmartPack/PackageManager       flav:pro       17  iv_ic_clr:
 33          master  zacharee/RootActivityLauncher  flav:          17  iv_ic_clr:
 54          main    tytydraco/LADB                 flav:          17  iv_ic_clr:
