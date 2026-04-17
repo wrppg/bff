@@ -32,7 +32,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           BRANCH_REF=$(gh repo view ${{ github.event.inputs.repo }} --json defaultBranchRef --jq '.defaultBranchRef.name')
-          # ref=$(gh api https://api.github.com/repos/${{ github.event.inputs.repo }} --jq '.default_branch')
+          # BRANCH_REF=$(gh api https://api.github.com/repos/${{ github.event.inputs.repo }} --jq '.default_branch')
 
           echo "branch_ref=$BRANCH_REF" >> $GITHUB_OUTPUT
       
