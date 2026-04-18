@@ -7,7 +7,7 @@ on:
         required: true
         type: string
       ref:
-        required: true
+        required: false
         type: string
         default: "default"
       vercode:
@@ -16,7 +16,7 @@ on:
       java:
         required: false
         type: string
-        default: "17"
+        # default: "17"
 
 jobs:
   build:
@@ -27,26 +27,37 @@ jobs:
 
       - name: find default branch
         id: find-default-branch
-        if: github.event.inputs.ref == 'default'
+        if: github.event.inputs.ref == 'default' || github.event.inputs.ref == ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           BRANCH_REF=$(gh repo view ${{ github.event.inputs.repo }} --json defaultBranchRef --jq '.defaultBranchRef.name')
           # BRANCH_REF=$(gh api https://api.github.com/repos/${{ github.event.inputs.repo }} --jq '.default_branch')
 
-          echo "branch_ref=$BRANCH_REF" >> $GITHUB_OUTPUT
+          echo "branch_ref=$BRANCH_REF" >> $GITHUB_ENV
       
-      - uses: actions/checkout@v6
-        with:
-          repository: ${{ github.event.inputs.repo }}
-          ref: ${{ steps.find-default-branch.outputs.branch_ref  || github.event.inputs.ref }}
+      - name: find JAVA version
+        run: |
+          JAVA_VER=$((curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${branch_ref}/app/build.gradle" \
+          || curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${branch_ref}/app/build.gradle.kts") \
+          | awk -F '_' '/\ysourceCompatibility\y/ {print $NF; exit}')
+
+          [[ "$JAVA_VER" -ge 17 ]] || unset JAVA_VER
+          echo "JAVA_VER=$JAVA_VER" >> $GITHUB_ENV
 
       - uses: actions/setup-java@v5
         with:
           distribution: "temurin"
           # java-version: "17"
-          java-version: ${{ github.event.inputs.java || '17' }}
+          # java-version: ${{ github.event.inputs.java || '17' }}
+          java-version: ${{ github.event.inputs.java || env.JAVA_VER || '17' }}
           cache: "gradle"
+      
+      - uses: actions/checkout@v6
+        with:
+          repository: ${{ github.event.inputs.repo }}
+          ref: ${{ env.branch_ref  || github.event.inputs.ref }}
+          # ref: ${{ steps.find-default-branch.outputs.branch_ref  || github.event.inputs.ref }}
 
       - name: Run script
         env:
@@ -60,6 +71,7 @@ jobs:
       - name: Check env
         run: |
           echo "APP_NAME=$APP_NAME"
+          echo "JAVA_VER=$JAVA_VER"
           echo "FLAV=$FLAV"
           echo "IV_IC_COLOR=$IV_IC_COLOR"
 
