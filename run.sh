@@ -7,8 +7,7 @@ APP_NAME="${APP_NAME^}"
 
 curl -sSLf -o app_record.txt https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/app_record.txt
 
-# SELECT_REC=$(awk -v IGNORECASE=1 '/'"${APP_NAME}"'/ {print $0}' app_record.txt)
-SELECT_REC=$(awk -v IGNORECASE=1 '/'"${APP_NAME,,}"'/ {print $0}' app_record.txt)
+SELECT_REC=$(awk -v IGNORECASE=1 '/'"${APP_NAME}"'/ {print $0}' app_record.txt)
 # FLAV=$(awk '{print $NF}' <<< "${SELECT_REC}" | awk -F ':' '{print $2}')
 FLAV=$(awk '{print $4}' <<< "${SELECT_REC}" | awk -F ':' '{print $2}')
 echo "FLAV=${FLAV}" >> $GITHUB_ENV
