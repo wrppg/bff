@@ -143,9 +143,9 @@ jobs:
           APK_DIR=$(dirname $APK_DIR)
           VER_NAME=$(jq -r '.elements[0].versionName' ${APK_DIR}/output-metadata.json)
 
-          shopt -s nocasematch
+          # shopt -s nocasematch
           for apk in "$APK_DIR"/*.apk; do
-            if [[ $apk =~ ${APP_NAME} ]]; then
+            if [[ ${apk,,} =~ ${APP_NAME,,} ]]; then
               break;
             fi
             RENAME_APK=$(sed -E "s/(app-[^-]+)(.*)/\1-${VER_NAME}\2/" <<< "$apk")
@@ -155,7 +155,7 @@ jobs:
               mv $apk ${RENAME_APK}
             fi
           done
-          shopt -u nocasematch
+          # shopt -u nocasematch
 
           echo "VER_NAME=${VER_NAME}" >> $GITHUB_ENV
           echo "APK_DIR=${APK_DIR}" >> $GITHUB_ENV
