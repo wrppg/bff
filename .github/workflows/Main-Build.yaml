@@ -111,9 +111,9 @@ jobs:
         run: |
           find app/build/outputs/apk/ -name '*.apk' -exec echo '✅' {} \;
 
-      - uses: actions/upload-artifact@v7
-        with:
-          path: path/to/artifact/world.txt
+      # - uses: actions/upload-artifact@v7
+      #   with:
+      #     path: 
 
       - name: Sign APK
         env:
