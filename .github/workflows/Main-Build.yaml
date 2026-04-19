@@ -76,7 +76,7 @@ jobs:
           echo "IV_IC_COLOR=$IV_IC_COLOR"
 
       - id: cache-magick
-        if: env.IV_IC_COLOR == 'yes'
+        if: env.IC_COLOR != 'no'
         uses: actions/cache@v5
         with:
           path: ~/bin/magick
@@ -85,7 +85,7 @@ jobs:
             ${{ runner.os }}-bin-
 
       - name: Install magick
-        if: steps.cache-magick.outputs.cache-hit != 'true' && env.IV_IC_COLOR == 'yes'
+        if: steps.cache-magick.outputs.cache-hit != 'true' && env.IC_COLOR != 'no'
         run: |
           mkdir -p ~/bin
           curl -L https://download.imagemagick.org/archive/binaries/magick --output-dir ~/bin -o magick
@@ -94,24 +94,51 @@ jobs:
       - name: Add bin to PATH
         run: echo "$HOME/bin" >> $GITHUB_PATH
 
-      - name: Inverse Colour Launcher Icon
-        if: env.IV_IC_COLOR == 'yes'
+      # - name: Inverse Colour Launcher Icon
+      #   if: env.IV_IC_COLOR == 'yes'
+      #   run: |
+      #     ic_launcher_name=$(find app/src/ -type f -name 'AndroidManifest.xml' -print -quit \
+      #     -exec yq -r --xml-attribute-prefix "+@" -p=xml -o=json '.manifest.application."+@android:icon"' {} \; | \
+      #     cut -f2 -d "/")
+
+      #     ic_launcher_ext="$(find app/src/ -type f -name "${ic_launcher_name}.*" -print -quit)"
+      #     ic_launcher_ext="${ic_launcher_ext##*.}"
+
+      #     find app/src -iname "${ic_launcher_name}*.${ic_launcher_ext}" \
+      #     -exec magick mogrify -channel RGB -negate {} \+
+       
+      #     # find app/src \( -iname "${ic_launcher_name}*.png" -o -iname "${ic_launcher_name}*.webp" \) \
+      #     # -exec magick mogrify -channel RGB -negate {} \+
+          
+      #     # find app/src -iname 'ic_launcher*.png' -exec magick mogrify -channel RGB -negate {} \+
+
+      - name: Change Color Icon
+        if: env.IC_COLOR != 'no'
         run: |
-          ic_launcher_name=$(find app/src/ -type f -name 'AndroidManifest.xml' \
+          ic_launcher_name=$(find app/src/ -type f -name 'AndroidManifest.xml' -print -quit \
           -exec yq -r --xml-attribute-prefix "+@" -p=xml -o=json '.manifest.application."+@android:icon"' {} \; | \
           cut -f2 -d "/")
 
           ic_launcher_ext="$(find app/src/ -type f -name "${ic_launcher_name}.*" -print -quit)"
           ic_launcher_ext="${ic_launcher_ext##*.}"
 
-          find app/src -iname "${ic_launcher_name}*.${ic_launcher_ext}" \
-          -exec magick mogrify -channel RGB -negate {} \+
-       
-          # find app/src \( -iname "${ic_launcher_name}*.png" -o -iname "${ic_launcher_name}*.webp" \) \
-          # -exec magick mogrify -channel RGB -negate {} \+
+          case "$color" in
+          "INVERSE")
+            MG_ARGS=(-channel RGB -negate)
+            ;;
+          "RED_TO_BLUE")
+            MG_ARGS=(-channel-fx "red<=>blue")
+            ;;
+          "BLUE_TO_GREEN")
+            MG_ARGS=(-channel-fx "blue<=>green")
+            ;;
+          *)
+            MG_ARGS=(-intensity Brightness -colorspace gray)
+            ;;
+          esac
           
-          # find app/src -iname 'ic_launcher*.png' -exec magick mogrify -channel RGB -negate {} \+
-
+          find app/src -iname "${ic_launcher_name}*.${ic_launcher_ext}" magick mogrify "${MG_ARGS[@]}" {} +
+          
       - run: yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
 
       - name: Build APK
