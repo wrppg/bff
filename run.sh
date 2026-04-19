@@ -52,7 +52,7 @@ echo "VER_CODE=${VER_CODE}" >> $GITHUB_ENV
 PERM=$(find app -type f -name 'AndroidManifest.xml' -exec yq --xml-attribute-prefix "+@" -p=xml -o=json {} \; \
 | jq -r '.manifest.permission | (if type=="array" then . else [.] end)[]["+@android:name"] | select(length > 0)' | sort -u)
 
-## Build permsission pettern
+## Build permsission pattern
 PERM_EXPR=$(tr '\n' '|' <<< "${PERM}" | sed -E 's,\|$,,')
 PERM_EXPR=$(sed -E -e '/^[[:space:]]+$/d' -e '/^$/d' -e '/\$\{.*\}/d' <<< "${PERM_EXPR}") # Ignore placeholder app id name
 
