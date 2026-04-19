@@ -73,7 +73,7 @@ jobs:
           echo "APP_NAME=$APP_NAME"
           echo "JAVA_VER=$JAVA_VER"
           echo "FLAV=$FLAV"
-          echo "IV_IC_COLOR=$IV_IC_COLOR"
+          echo "IC_COLOR=$IC_COLOR"
 
       - id: cache-magick
         if: env.IC_COLOR != 'no'
@@ -234,10 +234,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_APK_REPO }}
         run: |
-          gh release view -R wrppg/apk "${tag_name}" && echo "skip=true" >> $GITHUB_OUTPUT || true
+          # gh release view -R wrppg/apk "${tag_name}" && echo "skip=true" >> $GITHUB_OUTPUT || true
+          gh release delete -R wrppg/apk "${tag_name}" --cleanup-tag || true
           
       - name: Release
-        if: steps.check-dup.outputs.skip != 'true'
+        # if: steps.check-dup.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ secrets.GH_APK_REPO }}
         run: |
