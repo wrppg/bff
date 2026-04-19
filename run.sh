@@ -13,8 +13,8 @@ SELECT_REC=$(awk 'tolower($0) ~ /'"${APP_NAME,,}"'/ {print $0}' app_record.txt)
 FLAV=$(awk '{print $4}' <<< "${SELECT_REC}" | awk -F ':' '{print $2}')
 echo "FLAV=${FLAV}" >> $GITHUB_ENV
 
-IV_IC_COLOR=$(awk '{print $6}' <<< "${SELECT_REC}" | awk -F ':' '{print $2}')
-echo "IV_IC_COLOR=${IV_IC_COLOR}" >> $GITHUB_ENV
+IC_COLOR=$(awk '{print $6}' <<< "${SELECT_REC}" | awk -F ':' '{print $2}')
+echo "IC_COLOR=${IC_COLOR}" >> $GITHUB_ENV
 
 ### 1. Change versionCode To Max INT
 
