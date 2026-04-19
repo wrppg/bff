@@ -66,18 +66,10 @@ fi
 ### 4. patch source
 
 git clone https://github.com/wrppg/bff.git bff
-PATCH_FILE=$(find bff/ -type f -iname "patch-${APP_NAME}.y*ml" -print -quit)
-SG_CONF_FILE=$(find bff/ -type f -iname "sg-conf-${APP_NAME}.y*ml" -print -quit)
 
-# case "$1" in
-# 	*Inure*)
-# 		PATCH_FILE=$(find bff/ -type f -iname 'patch-Inure.y*ml' -print -quit)
-# 		;;
-# 	*Netguard*)
-# 		PATCH_FILE=$(find bff/ -type f -iname 'patch-Netguard.y*ml' -print -quit)
-# 		;;
-# 	*) unset PATCH_FILE ;;
-# esac
+PATCH_FILE=$(find bff/ -type f -iname "patch-${APP_NAME}.y*ml" -print -quit)
+
+SG_CONF_FILE=$(find bff/ -type f -iname "sg-conf-${APP_NAME}.y*ml" -print -quit)
 
 if ! [ -z "${PATCH_FILE}" ]; then
 	curl -Lf https://github.com/ast-grep/ast-grep/releases/download/0.39.4/app-x86_64-unknown-linux-gnu.zip -o ast-grep.zip
@@ -98,6 +90,7 @@ function RootActivityLauncher_Extra_Setup {
 
 	ANDROID_MANIFEST=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
  	API_LEVEL=$(awk '/^\s*compileSdk\s*[ =]/ {print $NF; exit}' $ANDROID_MANIFEST)
+	# API_LEVEL=$(grep -m 1 -oP 'compileSdk\s*[ =]\s*\K[0-9]+' $ANDROID_MANIFEST)
 	
  	[[ "${API_LEVEL}" =~ ^[0-9]+$ ]] || { echo '❌ Invalid API_LEVEL'; exit 99; }
 
