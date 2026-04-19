@@ -90,7 +90,7 @@ function RootActivityLauncher_Extra_Setup {
 
 	ANDROID_MANIFEST=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
  	API_LEVEL=$(awk '/^\s*compileSdk\s*[ =]/ {print $NF; exit}' $ANDROID_MANIFEST)
-	# API_LEVEL=$(grep -m 1 -oP 'compileSdk\s*[ =]\s*\K[0-9]+' $ANDROID_MANIFEST)
+	# API_LEVEL=$(grep -Po -m 1 'compileSdk\s*[ =]\s*\K[0-9]+' $ANDROID_MANIFEST)
 	
  	[[ "${API_LEVEL}" =~ ^[0-9]+$ ]] || { echo '❌ Invalid API_LEVEL'; exit 99; }
 
