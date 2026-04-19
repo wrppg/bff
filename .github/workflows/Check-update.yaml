@@ -22,9 +22,12 @@ jobs:
               ref=$(gh repo view $repo --json defaultBranchRef --jq '.defaultBranchRef.name')
             fi
 
-            LATEST=$((curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${ref}/app/build.gradle" \
-            || curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${ref}/app/build.gradle.kts") \
-            | awk '/^\s*versionCode( |=)/ { match($0, /[0-9]+/); print substr($0, RSTART, RLENGTH); exit }')
+            # LATEST=$((curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${ref}/app/build.gradle" \
+            # || curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${ref}/app/build.gradle.kts") \
+            # | awk '/^\s*versionCode( |=)/ { match($0, /[0-9]+/); print substr($0, RSTART, RLENGTH); exit }')
+
+            LATEST=$(curl -sfL -Z "https://raw.githubusercontent.com/${repo}/refs/heads/${ref}/app/build.gradle"{,.kts} 2>/dev/null | \
+            grep -m 1 -oP 'versionCode\s*[= ]\s*\K[0-9]+')
             
             if [[ "$LATEST" -ne "$vercode" && -n $LATEST && -n $vercode ]]; then
                 echo "✨ Detect version change $repo: $vercode --> $LATEST"
