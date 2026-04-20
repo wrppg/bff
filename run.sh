@@ -33,6 +33,9 @@ sed -E "/^\s*versionName/s/versionCode\.toString\(\)/\"${VER_CODE}\"/" -i $BUILD
 ##
 sed -E '/^\s*versionCode( |=)/s/[0-9]+$/2147483647/' -i $BUILD_GRADLE
 
+# use versionName in apk name instead
+sed -E "/archivesName\.set/s/versionCode/versionName/" -i $BUILD_GRADLE
+
 ### 2. patch package name
 
 OLD_APP_ID=$(awk -F '"' '/applicationId( |=)/ {print $2; exit}' $BUILD_GRADLE)
