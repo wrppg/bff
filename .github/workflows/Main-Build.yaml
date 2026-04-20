@@ -97,7 +97,7 @@ jobs:
       # - name: Inverse Colour Launcher Icon
       #   if: env.IV_IC_COLOR == 'yes'
       #   run: |
-      #     ic_launcher_name=$(find app/src/ -type f -name 'AndroidManifest.xml' -print -quit \
+      #     ic_launcher_name=$(find app/src/ -type f -name 'AndroidManifest.xml' \
       #     -exec yq -r --xml-attribute-prefix "+@" -p=xml -o=json '.manifest.application."+@android:icon"' {} \; | \
       #     cut -f2 -d "/")
 
@@ -115,7 +115,7 @@ jobs:
       - name: Change Color Icon
         if: env.IC_COLOR != 'no'
         run: |
-          ic_launcher_name=$(find app/src/ -type f -name 'AndroidManifest.xml' -print -quit \
+          ic_launcher_name=$(find app/src/ -type f -name 'AndroidManifest.xml' \
           -exec yq -r --xml-attribute-prefix "+@" -p=xml -o=json '.manifest.application."+@android:icon"' {} \; | \
           cut -f2 -d "/")
 
