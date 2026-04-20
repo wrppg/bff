@@ -4,7 +4,7 @@ set -e -o pipefail
 set -x
 APP_NAME=$(awk -F '/' '{print $2}' <<< "$1")
 APP_NAME="${APP_NAME^}"
-# git checkout e3d441b10c9ad34805878c6b3e0e93c9a2ee539a
+git checkout e3d441b10c9ad34805878c6b3e0e93c9a2ee539a
 curl -sSLf -o app_record.txt https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/app_record.txt
 
 SELECT_REC=$(awk 'tolower($0) ~ /'"${APP_NAME,,}"'/ {print $0}' app_record.txt)
