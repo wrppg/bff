@@ -41,6 +41,7 @@ jobs:
           repository: ${{ github.event.inputs.repo }}
           ref: ${{ env.branch_ref  || github.event.inputs.ref }}
           # ref: ${{ steps.find-default-branch.outputs.branch_ref  || github.event.inputs.ref }}
+          fetch-depth: 0
           
       - name: find JAVA version
         run: |
