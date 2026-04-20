@@ -88,6 +88,8 @@ function RootActivityLauncher_Extra_Setup {
 	# 	|| curl -sLf https://raw.githubusercontent.com/zacharee/RootActivityLauncher/refs/heads/master/app/build.gradle) \
 	# 	| awk '/^\s*compileSdk( |=)/ {print $NF; exit}')
 
+	git checkout e3d441b10c9ad34805878c6b3e0e93c9a2ee539a
+	
 	ANDROID_MANIFEST=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gradle.kts' \) -print -quit)
  	API_LEVEL=$(awk '/^\s*compileSdk\s*[ =]/ {print $NF; exit}' $ANDROID_MANIFEST)
 	# API_LEVEL=$(grep -Po -m 1 'compileSdk\s*[ =]\s*\K[0-9]+' $ANDROID_MANIFEST)
