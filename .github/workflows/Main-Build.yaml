@@ -36,6 +36,12 @@ jobs:
 
           echo "branch_ref=$BRANCH_REF" >> $GITHUB_ENV
       
+      - uses: actions/checkout@v6
+        with:
+          repository: ${{ github.event.inputs.repo }}
+          ref: ${{ env.branch_ref  || github.event.inputs.ref }}
+          # ref: ${{ steps.find-default-branch.outputs.branch_ref  || github.event.inputs.ref }}
+          
       - name: find JAVA version
         run: |
           JAVA_VER=$((curl -sfL "https://raw.githubusercontent.com/${repo}/refs/heads/${branch_ref}/app/build.gradle" \
@@ -53,12 +59,6 @@ jobs:
           java-version: ${{ github.event.inputs.java || env.JAVA_VER || '17' }}
           cache: "gradle"
       
-      - uses: actions/checkout@v6
-        with:
-          repository: ${{ github.event.inputs.repo }}
-          ref: ${{ env.branch_ref  || github.event.inputs.ref }}
-          # ref: ${{ steps.find-default-branch.outputs.branch_ref  || github.event.inputs.ref }}
-
       - name: Run script
         env:
           KEYSTORE: ${{ secrets.SIGNING_KEY }}
