@@ -198,10 +198,9 @@ jobs:
           token: ${{ secrets.GH_APK_REPO }}
           path: "apk-repo"
 
-      - run: |
+      - name: update.txt
+        run: |
           cd apk-repo
-          pwd
-          ls
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-action[bot]"
           git pull
@@ -209,19 +208,9 @@ jobs:
           echo "APP_FLAV_NAME=${APP_FLAV_NAME}" >> $GITHUB_ENV
           echo "${APP_FLAV_NAME} ${VER_NAME} update to ${VER_NAME}" > update.txt
           git add update.txt
-          # git commit -m "update" && git push
           
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "update"
-            git push
-          fi
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update" && git push)
           
-          # git diff --quiet && git diff --staged --quiet || (git commit -m "Update" && git push)
-          
-          cd -
-          pwd
 ################################
 
       - name: build tag_name
@@ -250,7 +239,6 @@ jobs:
 
           gh release create "${tag_name}" --title "${APP_FLAV_NAME} ${VER_NAME}" --repo wrppg/apk ${APK_DIR}/*.apk --notes $'Automate build\n'"update to ${VER_NAME}"
 
-          # gh release upload "${versionName}-${APP_FLAV_NAME}" ${APK_PATH_PREFIX}/*.apk
 
       - uses: actions/checkout@v6
         with:
@@ -266,12 +254,5 @@ jobs:
           column -t app_record.txt > app_record.txt.tmp
           mv app_record.txt.tmp app_record.txt
           git add app_record.txt
-          # git commit -m "update app_record.txt"
-          # git commit -m "app_record.txt ${APP_NAME} to ${VER_CODE}"
-          
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "app_record.txt ${APP_NAME} to ${VER_CODE}"
-            git push
-          fi
+
+          git diff --quiet && git diff --staged --quiet || (git commit -m "app_record.txt ${APP_NAME} to ${VER_CODE}" && git push)
