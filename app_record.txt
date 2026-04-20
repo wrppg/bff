@@ -6,4 +6,4 @@
 0           default  cylonid/NativeAlphaForAndroid  flav:extended  17  ic_colr:RED_TO_BLUE
 28          default  yogeshpaliyal/Deepr            flav:pro       17  ic_colr:no
 0           default  Kin69/Athena                   flav:fdroid    17  ic_colr:INVERSE
-0           default  doubleangels/Nextdnsmanager    flav:foss      21  ic_colr:RED_TO_BLUE
+269         default  doubleangels/Nextdnsmanager    flav:foss      21  ic_colr:RED_TO_BLUE
