@@ -23,6 +23,12 @@ BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gra
 
 ## Do this because some use ```versionName = versionCode.toString()``` ###
 VER_CODE=$(awk '/^\s*versionCode( |=)/ {print $NF; exit}' $BUILD_GRADLE)
+
+# VER_NAME only used for rename apk
+if (grep -P 'versionName\s*[= ]\s*versionCode\.toString\(\)' $BUILD_GRADLE); then
+	VER_NAME=$VER_CODE
+	echo "VER_NAME=$VER_NAME" >> $GITHUB_ENV
+fi
 sed -E "/^\s*versionName/s/versionCode\.toString\(\)/\"${VER_CODE}\"/" -i $BUILD_GRADLE
 ##
 sed -E '/^\s*versionCode( |=)/s/[0-9]+$/2147483647/' -i $BUILD_GRADLE
