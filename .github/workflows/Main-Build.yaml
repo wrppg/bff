@@ -123,18 +123,18 @@ jobs:
           ic_launcher_ext="${ic_launcher_ext##*.}"
 
           case "$color" in
-          "INVERSE")
-            MG_ARGS=(-channel RGB -negate)
-            ;;
-          "RED_TO_BLUE")
-            MG_ARGS=(-channel-fx "red<=>blue")
-            ;;
-          "BLUE_TO_GREEN")
-            MG_ARGS=(-channel-fx "blue<=>green")
-            ;;
-          *)
-            MG_ARGS=(-intensity Brightness -colorspace gray)
-            ;;
+            "INVERSE")
+              MG_ARGS=(-channel RGB -negate)
+              ;;
+            "RED_TO_BLUE")
+              MG_ARGS=(-channel-fx "red<=>blue")
+              ;;
+            "BLUE_TO_GREEN")
+              MG_ARGS=(-channel-fx "blue<=>green")
+              ;;
+            *)
+              MG_ARGS=(-intensity Brightness -colorspace gray)
+              ;;
           esac
           
           find app/src -iname "${ic_launcher_name}*.${ic_launcher_ext}" magick mogrify "${MG_ARGS[@]}" {} +
