@@ -74,6 +74,7 @@ jobs:
           echo "APP_NAME=$APP_NAME"
           echo "JAVA_VER=$JAVA_VER"
           echo "FLAV=$FLAV"
+          echo "VER_NAME=$VER_NAME"
           echo "IC_COLOR=$IC_COLOR"
 
       - id: cache-magick
