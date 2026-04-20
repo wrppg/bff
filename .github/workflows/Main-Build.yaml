@@ -169,7 +169,9 @@ jobs:
         run: |
           APK_DIR=$(find app/build/outputs/apk/ -name '*.apk' -print -quit)
           APK_DIR=$(dirname $APK_DIR)
-          VER_NAME=$(jq -r '.elements[0].versionName' ${APK_DIR}/output-metadata.json)
+          if [[ -z $VER_NAME ]]; then
+            VER_NAME=$(jq -r '.elements[0].versionName' ${APK_DIR}/output-metadata.json)
+          fi
 
           # shopt -s nocasematch
           for apk in "$APK_DIR"/*.apk; do
