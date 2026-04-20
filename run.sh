@@ -4,7 +4,7 @@ set -e -o pipefail
 set -x
 APP_NAME=$(awk -F '/' '{print $2}' <<< "$1")
 APP_NAME="${APP_NAME^}"
-git checkout e3d441b10c9ad34805878c6b3e0e93c9a2ee539a
+# git checkout e3d441b10c9ad34805878c6b3e0e93c9a2ee539a
 curl -sSLf -o app_record.txt https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/app_record.txt
 
 SELECT_REC=$(awk 'tolower($0) ~ /'"${APP_NAME,,}"'/ {print $0}' app_record.txt)
@@ -25,10 +25,10 @@ BUILD_GRADLE=$(find app -maxdepth 1 \( -name 'build.gradle' -or -name 'build.gra
 VER_CODE=$(awk '/^\s*versionCode( |=)/ {print $NF; exit}' $BUILD_GRADLE)
 
 # VER_NAME only used for rename apk
-if (grep -P 'versionName\s*[= ]\s*versionCode\.toString\(\)' $BUILD_GRADLE); then
-	VER_NAME=$VER_CODE
-	echo "VER_NAME=$VER_NAME" >> $GITHUB_ENV
-fi
+# if (grep -P 'versionName\s*[= ]\s*versionCode\.toString\(\)' $BUILD_GRADLE); then
+# 	VER_NAME=$VER_CODE
+# 	echo "VER_NAME=$VER_NAME" >> $GITHUB_ENV
+# fi
 sed -E "/^\s*versionName/s/versionCode\.toString\(\)/\"${VER_CODE}\"/" -i $BUILD_GRADLE
 ##
 sed -E '/^\s*versionCode( |=)/s/[0-9]+$/2147483647/' -i $BUILD_GRADLE
