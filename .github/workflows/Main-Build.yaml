@@ -163,8 +163,10 @@ jobs:
         run: |
           echo "${KEYSTORE}" | base64 -d > apksign.keystore
           find app/build/outputs/apk/ -name '*.apk' -exec \
-          ${ANDROID_HOME}/build-tools/36.0.0/apksigner \
+          "$(find ${ANDROID_HOME}/build-tools/ -type f -name 'apksigner' -print -quit)" \
           sign --ks apksign.keystore --ks-pass env:SIGNING_STORE_PASSWORD {} \;
+          
+          # ${ANDROID_HOME}/build-tools/36.0.0/apksigner \
 
       - name: rename apk
         run: |
