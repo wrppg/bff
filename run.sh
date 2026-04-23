@@ -128,6 +128,17 @@ function NetGuard_Extra_Setup {
  	set -x
 }
 
+function LinkSheet_Extra_Setup {
+	set +x
+ 	mkdir -p .ignored/
+	echo "${KEYSTORE}" | base64 -d > .ignored/keystore.jks
+	echo "KEYSTORE_FILE_PATH=.ignored/keystore.jks" >> .ignored/keystore.properties
+	echo "KEYSTORE_PASSWORD=${SIGNING_STORE_PASSWORD}" >> .ignored/keystore.properties
+	echo "KEY_ALIAS=${SIGNING_KEY_ALIAS}" >> .ignored/keystore.properties
+	echo "KEY_PASSWORD=${SIGNING_KEY_PASSWORD}" >> .ignored/keystore.properties
+ 	set -x
+}
+
 # function Athena_Extra_Setup {
 # 	sudo apt install -y golang-go
 # }
