@@ -67,7 +67,7 @@ jobs:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
-          sed -E 's/(^org.gradle.jvmargs=-Xmx)\w+\b/\18192m/' gradle.properties
+          sed -E 's/(^org.gradle.jvmargs=-Xmx)\w+\b/\18192m/' -i gradle.properties
           curl -sfL https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/run.sh | bash -s -- ${{ github.event.inputs.repo }}
 
       - name: Check env
