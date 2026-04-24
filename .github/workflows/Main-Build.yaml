@@ -139,7 +139,7 @@ jobs:
               ;;
           esac
           
-          find app/src -iname "${ic_launcher_name}*.${ic_launcher_ext}" -exec magick mogrify "${MG_ARGS[@]}" {} +
+          find app/src -iname "${ic_launcher_name}*.${ic_launcher_ext}" -exec magick mogrify "${MG_ARGS[@]}" {} \+
           
       - run: yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
 
