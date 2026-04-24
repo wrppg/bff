@@ -138,7 +138,8 @@ jobs:
               MG_ARGS=(-intensity Brightness -colorspace gray)
               ;;
           esac
-          
+
+                                                                                # \+ is important!!! (slash plus)
           find app/src -iname "${ic_launcher_name}*.${ic_launcher_ext}" -exec magick mogrify "${MG_ARGS[@]}" {} \+
           
       - run: yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
