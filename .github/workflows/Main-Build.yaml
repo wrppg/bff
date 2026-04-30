@@ -78,6 +78,29 @@ jobs:
           echo "VER_NAME=$VER_NAME"
           echo "IC_COLOR=$IC_COLOR"
 
+      # - id: cache-tools
+      #   uses: actions/cache@v5
+      #   with:
+      #     path: $HOME/bin/
+      #     key: ${{ runner.os }}-bin-${{ hashFiles('deps.json') }}
+
+      # - name: Install tools
+      #   if: steps.cache-magick.outputs.cache-hit != 'true'
+      #   run: |
+      #     mkdir -p $HOME/bin
+          
+      #     deps="$(curl -sL https://raw.githubusercontent.com/wrppg/bff/refs/heads/main/deps.json)"
+      #     MAGICK_URL="$(echo $deps | jq .magick)"
+      #     AST_GREP_URL=$(echo $deps | jq '."ast-grep"')
+          
+      #     curl -L $MAGICK_URL -o $HOME/bin/magick
+      #     curl -L $AST_GREP_URL -o $HOME/bin/ast-grep.zip
+
+      #     unzip ast-grep.zip sg ast-grep
+      #     rm ast-grep.zip
+          
+      #     chmod +x $HOME/bin/*
+          
       - id: cache-magick
         if: env.IC_COLOR != 'no'
         uses: actions/cache@v5
@@ -95,7 +118,9 @@ jobs:
           chmod +x ~/bin/*
 
       - name: Add bin to PATH
-        run: echo "$HOME/bin" >> $GITHUB_PATH
+        run: |
+          chmod +x $HOME/bin/*
+          echo "$HOME/bin" >> $GITHUB_PATH
 
       # - name: Inverse Colour Launcher Icon
       #   if: env.IV_IC_COLOR == 'yes'
