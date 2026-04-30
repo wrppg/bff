@@ -1,0 +1,4 @@
+{
+  "magick": "https://github.com/ImageMagick/ImageMagick/releases/download/7.1.2-21/ImageMagick-7.1.2-21-gcc-x86_64.AppImage",
+  "ast-grep": "https://github.com/ast-grep/ast-grep/releases/download/0.42.1/app-x86_64-unknown-linux-gnu.zip"
+}
