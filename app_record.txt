@@ -1,4 +1,4 @@
-2025101201  default  M66B/NetGuard                  flav:          17  ic_colr:BLUE_TO_GREEN
+2026052101  default  M66B/NetGuard                  flav:          17  ic_colr:BLUE_TO_GREEN
 10702       default  Hamza417/Inure                 flav:github    17  ic_colr:RED_TO_BLUE
 78          default  SmartPack/PackageManager       flav:pro       17  ic_colr:INVERSE
 33          default  zacharee/RootActivityLauncher  flav:          17  ic_colr:INVERSE
